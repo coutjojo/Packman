@@ -8,7 +8,6 @@ public class Game {
     private Graphics g;
     private BufferStrategy bs;
     private boolean running = true;
-    int x;
     //////////////////////////////////////////////////////////////////////
     public Game(){
         window = new Window();
@@ -41,12 +40,11 @@ public class Game {
 
         g = bs.getDrawGraphics();
         g.clearRect(0,0,1200, 500);
-        g.drawRect(x,30,100,100);
+        g.drawRect(30,30,100,100);
         bs.show();
         g.dispose();
     }
 
     public void tick() {
-        x +=1;
     }
 }

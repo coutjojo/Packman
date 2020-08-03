@@ -2,12 +2,13 @@ package EntitySystem;
 
 import java.awt.*;
 
-public class Gohst extends Entity {
+public class Gohst extends Creature {
     private char color;
     private String identifier;
     private int SPEED = 5;
     //////////////////////////////////
-    public Gohst(char color,String name) {
+    public Gohst(char color,String name,float posX, float posY) {
+        super(posX,posY);
         this.identifier = name;
         this.color = color;
     }
