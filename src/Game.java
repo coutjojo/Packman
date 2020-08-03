@@ -24,6 +24,10 @@ public class Game {
         }
     }
 
+    public void init() {
+        Assets.init();
+    }
+
     public void render() {
         bs = window.getCanvas().getBufferStrategy();
         if(window.getCanvas().getBufferStrategy() == null){
