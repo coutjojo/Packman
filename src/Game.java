@@ -36,8 +36,8 @@ public class Game {
         }
     }
     private void init(){
-    gameState = new GameState();
-    State.setState(gameState);
+        gameState = new GameState();
+        State.setState(gameState);
     }
     public void render() {
         bs = window.getCanvas().getBufferStrategy();
