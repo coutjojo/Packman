@@ -8,15 +8,27 @@ public class Game {
     private Graphics g;
     private BufferStrategy bs;
     private boolean running = true;
+    int x;
     //////////////////////////////////////////////////////////////////////
     public Game(){
         window = new Window();
         gameLoop();
     }
     public void gameLoop(){
+        int fps = 80;
+        double timePerTick = 1000000000/fps;
+        double delta = 0;
+        long now;
+        long lastTime = System.nanoTime();
         while(running){
-            tick();
-            render();
+            now = System.nanoTime();
+            delta += (now - lastTime) / timePerTick;
+            lastTime = now;
+            if(delta >=1) {
+                tick();
+                render();
+                delta--;
+            }
         }
     }
 
@@ -26,12 +38,15 @@ public class Game {
             window.getCanvas().createBufferStrategy(3);
             return;
         }
+
         g = bs.getDrawGraphics();
-        g.drawRect(30,30,100,100);
+        g.clearRect(0,0,1200, 500);
+        g.drawRect(x,30,100,100);
         bs.show();
         g.dispose();
     }
 
     public void tick() {
+        x +=1;
     }
 }
