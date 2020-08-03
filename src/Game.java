@@ -1,4 +1,6 @@
 import PackmanUi.Window;
+import states.GameState;
+import states.State;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -8,13 +10,15 @@ public class Game {
     private Graphics g;
     private BufferStrategy bs;
     private boolean running = true;
-    int x;
+    private State gameState;
     //////////////////////////////////////////////////////////////////////
     public Game(){
         window = new Window();
         gameLoop();
+
     }
     public void gameLoop(){
+        init();
         int fps = 80;
         double timePerTick = 1000000000/fps;
         double delta = 0;
@@ -31,7 +35,10 @@ public class Game {
             }
         }
     }
-
+    private void init(){
+        gameState = new GameState();
+        State.setState(gameState);
+    }
     public void render() {
         bs = window.getCanvas().getBufferStrategy();
         if(window.getCanvas().getBufferStrategy() == null){
@@ -41,12 +48,17 @@ public class Game {
 
         g = bs.getDrawGraphics();
         g.clearRect(0,0,1200, 500);
-        g.drawRect(x,30,100,100);
+        if(State.getState()!= null){
+            State.getState().render(g);
+        }
         bs.show();
         g.dispose();
     }
 
     public void tick() {
-        x +=1;
+        if(State.getState()!= null){
+            State.getState().tick();
+        }
+
     }
 }
