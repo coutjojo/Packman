@@ -1,5 +1,6 @@
 import ImageLoad.Assets;
 import ImageLoad.ImageLoader;
+import Input.Input;
 import PackmanUi.Window;
 import states.GameState;
 import states.State;
@@ -41,6 +42,8 @@ public class Game {
     private void init(){
         gameState = new GameState();
         State.setState(gameState);
+        Assets.init();
+        window.addKeyListener(new Input());
     }
     public void render() {
         bs = window.getCanvas().getBufferStrategy();
