@@ -1,4 +1,6 @@
 import PackmanUi.Window;
+import States.GameState;
+import States.State;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -8,9 +10,11 @@ public class Game {
     private Graphics g;
     private BufferStrategy bs;
     private boolean running = true;
+    private State state;
     //////////////////////////////////////////////////////////////////////
     public Game(){
         window = new Window();
+        state = new GameState();
         gameLoop();
     }
     public void gameLoop(){
@@ -40,7 +44,7 @@ public class Game {
 
         g = bs.getDrawGraphics();
         g.clearRect(0,0,1200, 500);
-        g.drawRect(30,30,100,100);
+        state.render(g);
         bs.show();
         g.dispose();
     }
