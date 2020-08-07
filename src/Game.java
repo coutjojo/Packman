@@ -1,27 +1,23 @@
-import ImageLoad.Assets;
-import ImageLoad.ImageLoader;
 import PackmanUi.Window;
-import states.GameState;
-import states.State;
+import States.GameState;
+import States.State;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
 public class Game {
     private Window window;
     private Graphics g;
     private BufferStrategy bs;
     private boolean running = true;
-    private State gameState;
+    private State state;
     //////////////////////////////////////////////////////////////////////
     public Game(){
         window = new Window();
+        state = new GameState();
         gameLoop();
-
     }
     public void gameLoop(){
-        init();
         int fps = 80;
         double timePerTick = 1000000000/fps;
         double delta = 0;
@@ -38,10 +34,7 @@ public class Game {
             }
         }
     }
-    private void init(){
-        gameState = new GameState();
-        State.setState(gameState);
-    }
+
     public void render() {
         bs = window.getCanvas().getBufferStrategy();
         if(window.getCanvas().getBufferStrategy() == null){
@@ -51,17 +44,11 @@ public class Game {
 
         g = bs.getDrawGraphics();
         g.clearRect(0,0,1200, 500);
-        if(State.getState()!= null){
-            State.getState().render(g);
-        }
+        state.render(g);
         bs.show();
         g.dispose();
     }
 
     public void tick() {
-        if(State.getState()!= null){
-            State.getState().tick();
-        }
-
     }
 }
