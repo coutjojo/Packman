@@ -1,8 +1,8 @@
 import ImageLoad.Assets;
 import Input.Input;
 import PackmanUi.Window;
-import states.GameState;
-import states.State;
+import States.GameState;
+import States.State;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;

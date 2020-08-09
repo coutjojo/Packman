@@ -1,4 +1,4 @@
-package states;
+package States;
 
 import ImageLoad.Assets;
 
