@@ -3,28 +3,35 @@ package EntitySystem;
 import ImageLoad.Assets;
 import Input.Input;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class Player extends Creature {
-    private double SPEED = 3.0f;
+    private float SPEED = 3.0f;
 
-    private double xMove;
-    private double yMove;
+    private float xMove;
+    private float yMove;
 
-    private BufferedImage texture;
 
     public Player(float posX, float posY) {
         super(posX, posY);
-        texture = Assets.packman;
     }
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(texture,(int) posX,(int) posY,null);
+        if (xMove > 1 && yMove == 0)
+            g.drawImage(Assets.packman_RIGHT,(int) posX,(int) posY,null);
+        else if (xMove < -1 && yMove == 0)
+            g.drawImage(Assets.packman_LEFT,(int) posX,(int) posY,null);
+        else if (xMove == 0 && yMove > 1)
+            g.drawImage(Assets.packman_DOWN,(int) posX,(int) posY,null);
+        else if (xMove == 0 && yMove < -1)
+            g.drawImage(Assets.packman_UP,(int) posX,(int) posY,null);
+        else
+            g.drawImage(Assets.packman_RIGHT,(int) posX,(int) posY,null);
     }
 
     @Override
     public void tick() {
+        this.getMove();
         this.move();
     }
 
@@ -34,6 +41,8 @@ public class Player extends Creature {
     }
 
     public void getMove() {
+        xMove = 0;
+        yMove = 0;
         if(Input.UP)
             yMove = -SPEED;
         if (Input.DOWN)
