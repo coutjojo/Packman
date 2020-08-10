@@ -3,7 +3,7 @@ package EntitySystem;
 import java.awt.*;
 
 public abstract class Entity {
-    private double posX,posY;
+    protected double posX,posY;
 
     public Entity(float posX, float posY){
         this.posX = posX;
