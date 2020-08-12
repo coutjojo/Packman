@@ -13,9 +13,18 @@ public class CustomFileReader {
             while ((line = br.readLine())!= null){
                 builder.append(line+"\n");
             }
+            br.close();
         }catch(IOException e){
             e.printStackTrace();
         }
+        return builder.toString();
     }
-
+    public static int parseInt(String number){
+        try {
+             return Integer.parseInt(number);
+        }catch(NumberFormatException e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }

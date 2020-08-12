@@ -12,7 +12,7 @@ public class GameState extends State {
 
     public GameState(){
         player = new Player(20,20);
-        worldManager = new WorldGenerator("");
+        worldManager = new WorldGenerator("res/worlds/World1.txt");
     }
 
     @Override
