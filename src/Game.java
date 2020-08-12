@@ -1,9 +1,9 @@
-import EntitySystem.Player;
 import ImageLoad.Assets;
 import Input.Input;
 import PackmanUi.Window;
 import States.GameState;
 import States.State;
+import Worldmanager.WorldGenerator;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -14,6 +14,7 @@ public class Game {
     private BufferStrategy bs;
     private boolean running = true;
     private State gameState;
+    private WorldGenerator worldGenerator;
     //////////////////////////////////////////////////////////////////////
     public Game(){
         window = new Window();
@@ -54,6 +55,7 @@ public class Game {
         State.setState(gameState);
         Assets.init();
         window.addKeyListener(new Input());
+
     }
     public void render() {
         bs = window.getCanvas().getBufferStrategy();
