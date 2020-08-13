@@ -1,5 +1,6 @@
 package Worldmanager;
 
+import Main.Handler;
 import Tiles.Tile;
 import Utility.CustomFileReader;
 
@@ -9,10 +10,11 @@ public class WorldGenerator {
  private int[][] worldGrid;
  private int witdh = 5,height = 5;
  private int spawnX, spawnY;
+ private Handler handler;
 
-    public WorldGenerator(String path){
+    public WorldGenerator(String path, Handler handler){
+        this.handler = handler;
         genWorld(path);
-
     }
     public void genWorld(String path){
         String file = CustomFileReader.loadFileAsString(path);
@@ -44,5 +46,26 @@ public class WorldGenerator {
                 getTile(x,y).render(g,x * Tile.TILEWIDTH,y *Tile.TILEHEIGHT);
             }
         }
+    }
+
+    //GETTER & SETTER
+
+    public void setWorldGrid(int[][] worldGrid) {
+        this.worldGrid = worldGrid;
+    }
+    public int getSpawnX() {
+        return spawnX;
+    }
+    public int getSpawnY() {
+        return spawnY;
+    }
+    public int[][] getWorldGrid() {
+        return worldGrid;
+    }
+    public void setSpawnX(int spawnX) {
+        this.spawnX = spawnX;
+    }
+    public void setSpawnY(int spawnY) {
+        this.spawnY = spawnY;
     }
 }

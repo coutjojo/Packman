@@ -2,6 +2,8 @@ package EntitySystem;
 
 import ImageLoad.Assets;
 import Input.Input;
+import Main.Handler;
+
 import java.awt.*;
 
 public class Player extends Creature {
@@ -10,9 +12,11 @@ public class Player extends Creature {
     private float xMove;
     private float yMove;
 
+    private Handler handler;
 
-    public Player(float posX, float posY) {
+    public Player(float posX, float posY, Handler handler) {
         super(posX, posY);
+        this.handler = handler;
     }
 
     @Override
@@ -36,8 +40,17 @@ public class Player extends Creature {
     }
 
     public void move() {
-        posX += xMove;
-        posY += yMove;
+        if(!collide()) {
+            posX += xMove;
+            posY += yMove;
+        }
+    }
+
+    private boolean collide() {
+
+        //if(handler.getGame().getGameState().)
+
+        return false;
     }
 
     public void getMove() {
