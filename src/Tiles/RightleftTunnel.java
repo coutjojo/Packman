@@ -2,12 +2,12 @@ package Tiles;
 
 import ImageLoad.Assets;
 
-public class Wall extends Tile{
-    public Wall(int id) {
+public class RightleftTunnel extends Tile {
+    public RightleftTunnel(int id) {
         super(id, Assets.rightleftTunnel);
     }
     @Override
     public boolean isSolid(){
-      return true;
+        return true;
     }
 }

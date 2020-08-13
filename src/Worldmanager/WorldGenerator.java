@@ -34,7 +34,7 @@ public class WorldGenerator {
     public Tile getTile (int x ,int y){
          Tile t =Tile.tiles[worldGrid[x][y]];
          if (t == null ){
-             return Tile.wallTile;
+             return Tile.groundTile;
          }
          return t;
     }

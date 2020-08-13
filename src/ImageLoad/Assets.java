@@ -7,8 +7,8 @@ public class Assets {
     private static final int width = 50, height = 50;
     public static BufferedImage packman_UP, packman_DOWN, packman_LEFT, packman_RIGHT;
     public static BufferedImage ghost1, ghost2;
-    public static BufferedImage upperWall, rightWall, leftWall, downWall;
-    public static BufferedImage upperCorner, rightCorner, leftCorner, downCorner;
+    public static BufferedImage upperWall, rightWall, leftWall, lowerWall;
+    public static BufferedImage upperCorner, rightCorner, leftCorner, lowerCorner;
     public static BufferedImage updowntunnel, rightleftTunnel, boden;
 
     public static void init(){
@@ -24,16 +24,15 @@ public class Assets {
         upperWall = background.getTile(0,0,width,height);
         rightWall = background.getTile(width,0 ,width,height);
         leftWall = background.getTile(width * 2,0,width,height);
-        downWall = background.getTile(width * 3,0,width,height);
+        lowerWall = background.getTile(width * 3,0,width,height);
         upperCorner = background.getTile(0,height,width,height);
         rightCorner = background.getTile(width,height,width,height);
         leftCorner = background.getTile(width * 2,height,width,height);
-        downCorner = background.getTile(width * 3,height,width,height);
+        lowerCorner = background.getTile(width * 3,height,width,height);
         updowntunnel = background.getTile(0,height * 2,width,height);
         rightleftTunnel = background.getTile(width,height * 2,width,height);
         boden = background.getTile(width * 2,height * 2,width,height);
     }
-
     /**
      g.drawImage(Assets.upperWall,0,0,null);
      g.drawImage(Assets.rightWall,50,0,null);
