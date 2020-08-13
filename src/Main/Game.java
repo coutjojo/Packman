@@ -14,7 +14,7 @@ public class Game {
     private Graphics g;
     private BufferStrategy bs;
     private boolean running = true;
-    private State gameState;
+    private GameState gameState;
     Handler handler;
     //////////////////////////////////////////////////////////////////////
     public Game(){
@@ -87,7 +87,7 @@ public class Game {
     public Window getWindow() {
         return window;
     }
-    public State getGameState() {
+    public GameState getGameState() {
         return gameState;
     }
 }

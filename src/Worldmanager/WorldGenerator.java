@@ -9,7 +9,7 @@ import java.awt.*;
 public class WorldGenerator {
  private int[][] worldGrid;
  private int witdh = 5,height = 5;
- private int spawnX, spawnY;
+ private int spawnX = 50, spawnY = 50;
  private Handler handler;
 
     public WorldGenerator(String path, Handler handler){
@@ -67,5 +67,11 @@ public class WorldGenerator {
     }
     public void setSpawnY(int spawnY) {
         this.spawnY = spawnY;
+    }
+    public int getWitdh() {
+        return witdh;
+    }
+    public int getHeight() {
+        return height;
     }
 }

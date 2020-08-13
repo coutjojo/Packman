@@ -18,6 +18,9 @@ public abstract class State {
     public State(Handler handler) {
         this.handler = handler;
     }
+    public State getCurrentState() {
+        return currentState;
+    }
     // CLASS
     public abstract void tick();
 

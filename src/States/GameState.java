@@ -18,7 +18,7 @@ public class GameState extends State {
     public GameState(Handler handler){
         super(handler);
         world = new WorldGenerator("res/worlds/World1.txt",handler);
-        player = new Player(20,20,handler);
+        player = new Player(handler);
 
     }
 

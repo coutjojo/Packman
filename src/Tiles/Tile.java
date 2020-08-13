@@ -23,7 +23,7 @@ public abstract class Tile {
     public int getID(){
         return id;
     }
-    protected boolean isSolid(){
+    public boolean isSolid(){
         return false;
     }
     public void tick(){
