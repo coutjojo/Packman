@@ -23,7 +23,7 @@ public class WorldGenerator {
         spawnY = CustomFileReader.parseInt(tokens[3]);
         worldGrid = new int[witdh][height];
         for (int y = 0 ; y< height; y++){
-            for (int x = 0 ; x< height; x++){
+            for (int x = 0 ; x< witdh; x++){
                 worldGrid[x][y] = CustomFileReader.parseInt(tokens[(x + y*witdh)+4]);
             }
         }
@@ -40,7 +40,7 @@ public class WorldGenerator {
     }
     public void render(Graphics g){
         for (int y = 0 ; y< height; y++){
-            for (int x = 0 ; x< height; x++){
+            for (int x = 0 ; x< witdh; x++){
                 getTile(x,y).render(g,x * Tile.TILEWIDTH,y *Tile.TILEHEIGHT);
             }
         }

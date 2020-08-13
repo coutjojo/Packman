@@ -10,6 +10,9 @@ public class Window extends JFrame{
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         this.add(canvas);
+        canvas.setPreferredSize(new Dimension(1200, 500));
+        this.pack();
+
     }
     public Canvas getCanvas(){
         return canvas;

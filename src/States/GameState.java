@@ -8,22 +8,23 @@ import java.awt.*;
 public class GameState extends State {
 
     private final Player player;
-    private WorldGenerator worldManager;
+    private WorldGenerator world;
 
     public GameState(){
+        world = new WorldGenerator("res/worlds/World1.txt");
         player = new Player(20,20);
-        worldManager = new WorldGenerator("res/worlds/World1.txt");
+
     }
 
     @Override
     public void tick() {
-        worldManager.tick();
+        world.tick();
         player.tick();
     }
 
     @Override
     public void render(Graphics g) {
-        worldManager.render(g);
+        world.render(g);
         player.render(g);
     }
 }
