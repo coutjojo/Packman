@@ -53,25 +53,29 @@ public class Player extends Creature {
     }
 
     private boolean collide() {
-        if(xMove > 1 ) {
+        if(xMove > 1) {
             int x = (int) ((posX + Tile.TILEWIDTH + SPEED) / Tile.TILEWIDTH);
             int y = (int) (posY / Tile.TILEHEIGHT);
-            if(x > (handler.getGame().getGameState().getWorld().getWitdh()-1 * Tile.TILEWIDTH) || handler.getGame().getGameState().getWorld().getTile(x,y).isSolid())
+            // dd|| handler.getGame().getGameState().getWorld().getTile(x,y).isSolid()
+            if(x > (handler.getGame().getGameState().getWorld().getWitdh()-1 * Tile.TILEWIDTH))
                 return true;
         } else if (xMove < -1) {
             int x = (int) ((posX - SPEED) / Tile.TILEWIDTH);
             int y = (int) (posY / Tile.TILEHEIGHT);
-            if(x < 0 || handler.getGame().getGameState().getWorld().getTile(x,y).isSolid())
+            // || handler.getGame().getGameState().getWorld().getTile(x,y).isSolid()
+            if(x < 0)
                 return true;
         } else if (yMove < 1) {
             int x = (int) (posX / Tile.TILEWIDTH);
             int y = (int) ((posY + SPEED) / Tile.TILEHEIGHT);
-            if(y < 0 || handler.getGame().getGameState().getWorld().getTile(x,y).isSolid())
+            // || handler.getGame().getGameState().getWorld().getTile(x,y).isSolid()
+            if(y < 0)
                 return true;
         } else if (yMove < -1) {
             int x = (int) (posX / Tile.TILEWIDTH);
             int y = (int) ((posY - SPEED) / Tile.TILEHEIGHT);
-            if(y > (handler.getGame().getGameState().getWorld().getHeight()-1 * 50) ||handler.getGame().getGameState().getWorld().getTile(x,y).isSolid())
+            // ||handler.getGame().getGameState().getWorld().getTile(x,y).isSolid()
+            if(y > (handler.getGame().getGameState().getWorld().getHeight()-1 * 50))
                 return true;
         }
         return false;
