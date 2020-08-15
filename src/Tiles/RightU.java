@@ -2,9 +2,9 @@ package Tiles;
 
 import ImageLoad.Assets;
 
-public class LeftCorner extends Tile{
-    public LeftCorner(int id) {
-        super(id, Assets.leftCorner);
+public class RightU extends Tile{
+    public RightU(int id) {
+        super(id, Assets.rightU);
     }
     @Override
     public boolean isSolid(){

@@ -11,11 +11,17 @@ public abstract class Tile {
     public static Tile rightWallTile = new RightWall(2);
     public static Tile leftWallTile = new LeftWall(3);
     public static Tile lowerWallTile = new LowerWall(4);
-    public static Tile upperCornerTile = new RightWall(5);
-
-
-    public static Tile Tile = new RightWall(2);
+    public static Tile rightupperCornerTile = new RightUpperCorner(5);
+    public static Tile rightLowerCornerTile = new RightUpperCorner(6);
+    public static Tile leftUpperCornerTile = new LeftUpperCorner(7);
+    public static Tile leftLowerCornerTile = new LeftLowerCorner(8);
+    public static Tile upperU = new UpperU(8);
+    public static Tile rightU = new RightU(9);
+    public static Tile leftU = new LeftU(10);
+    public static Tile lowerU = new LowerU(11);
+    public static Tile allWall = new AllWall(12);
     protected BufferedImage texture;
+
     protected final int id;
 
     public Tile(int id, BufferedImage texture){
