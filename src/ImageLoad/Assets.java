@@ -13,14 +13,17 @@ public class Assets {
     public static BufferedImage updowntunnel, rightleftTunnel, ground, allWall;
 
     public static void init(){
+        //PACKMAN
         Spritsheet allPackman = new Spritsheet(ImageLoader.loadImage("/textures/packman.png"));
         packman_RIGHT = allPackman.getTile(0,0,width,height);
         packman_DOWN = allPackman.getTile(width,0,width,height);
         packman_UP = allPackman.getTile(width * 2,0,width,height);
         packman_LEFT = allPackman.getTile(width * 3,0,width,height);
+        //GEISTER
         Spritsheet allGeister = new Spritsheet(ImageLoader.loadImage("/textures/geister.png"));
         ghost1 = allGeister.getTile(0,0,width,height);
         ghost2 = allGeister.getTile(width,0,width,height);
+        //BACKGROUND
         Spritsheet background = new Spritsheet(ImageLoader.loadImage("/textures/background.png"));
         upperWall = background.getTile(0,0,width,height);
         rightWall = background.getTile(width,0 ,width,height);

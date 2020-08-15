@@ -25,7 +25,7 @@ public class WorldGenerator {
     public static int leftLowerCorner = 8;
     public static int updownTunnel = 14;
     public static int rightleftTunnel = 15;
-    public static int ground = 0;
+    public static int groundTile = 0;
     public static int allWall = 13;
     /////////////////////////////////////////////////////////Class
     public WorldGenerator(String path, Handler handler){
@@ -54,7 +54,7 @@ public class WorldGenerator {
     public Tile getTile (int x ,int y){
          Tile t =Tile.tiles[worldGrid[x][y]];
          if (t == null ){
-             return Tile.wallTile;
+             return Tile.groundTile;
          }
          return t;
     }

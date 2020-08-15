@@ -8,7 +8,7 @@ public class Gohst extends Creature {
     private int SPEED = 5;
     //////////////////////////////////
     public Gohst(char color,String name,float posX, float posY) {
-        super(posX,posY);
+        super(posX,posY, new Rectangle(40,40));
         this.identifier = name;
         this.color = color;
     }
