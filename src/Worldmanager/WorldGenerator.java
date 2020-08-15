@@ -9,8 +9,24 @@ public class WorldGenerator {
  private int[][] worldGrid;
  private int witdh = 5,height = 5;
  private int spawnX, spawnY;
-
-    public WorldGenerator(String path){
+ public static int upperWall = 1;
+ public static int rightWall = 2;
+ public static int leftWall = 3;
+ public static int lowerWall = 4;
+ public static int upperU = 9;
+ public static int rightU = 10;
+ public static int leftU = 11;
+ public static int lowerU = 12;
+ public static int rightUpperCorner = 5;
+ public static int rightLowerCorner = 6;
+ public static int leftUpperCorner = 7;
+ public static int leftLowerCorner = 8;
+ public static int updownTunnel = 14;
+ public static int rightleftTunnel = 15;
+ public static int ground = 0;
+ public static int allWall = 13;
+ /////////////////////////////////////////////////////////Class
+ public WorldGenerator(String path){
         genWorld(path);
 
     }
@@ -27,6 +43,7 @@ public class WorldGenerator {
                 worldGrid[x][y] = CustomFileReader.parseInt(tokens[(x + y*witdh)+4]);
             }
         }
+        modifyWorld(worldGrid);
     }
     public void tick(){
 
@@ -34,7 +51,7 @@ public class WorldGenerator {
     public Tile getTile (int x ,int y){
          Tile t =Tile.tiles[worldGrid[x][y]];
          if (t == null ){
-             return Tile.wallTile;
+             return Tile.groundTile;
          }
          return t;
     }
@@ -45,4 +62,113 @@ public class WorldGenerator {
             }
         }
     }
+    public void modifyWorld(int[][] world) {
+        String pattern = "";//LEFT RIGHT UP DOWN
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < witdh; x++) {
+                if (world[x][y]!= 0) {
+                    if ( x == 0) {
+                        pattern += 0;
+                    }else{
+                        if ( world[x - 1][y] != 0) { // check Wall Left
+                            pattern += 1;
+                        } else {
+                            pattern += 0;
+                        }
+                    }
+                    if (x == witdh-1) {
+                        pattern += 0;
+                    }else {
+                        if ( world[x + 1][y] != 0 ){ // check Wall Right
+                            pattern += 1;
+                        } else{
+                            pattern += 0;
+                        }
+                    }
+                    if ( y == 0) {
+                        pattern += 0;
+                    }else {
+                        if (world[x][y - 1] != 0) { // check Wall Up
+                            pattern += 1;
+                        } else {
+                            pattern += 0;
+                        }
+                    }
+                    if ( y == height - 1 ) {
+                        pattern += 0;
+                    }else {
+                        if (world[x][y + 1] != 0) { // check Wall Down
+                            pattern += 1;
+                        } else {
+                            pattern += 0;
+                        }
+                    }
+                    worldGrid[x][y] = getIdFromPattern(pattern);
+                    System.out.println("An der Stelle "+"x="+x+" "+"y="+y+" "+"ist das pattern"+pattern);
+                    pattern ="";
+                }
+            }
+        }
+    }
+    // LINKS RECHTS OBEN UNTEN
+        public int getIdFromPattern (String pattern){
+            if (pattern.equals("1000")) {
+                return rightU;
+            } else if (pattern.equals("0100")) {
+                return leftU;
+            } else if (pattern.equals("0010")) {
+                return lowerU;
+            } else if (pattern.equals("0001")) {
+                return upperU;
+            } else if (pattern.equals("1100")) {
+                return rightleftTunnel;
+            } else if (pattern.equals("1010")) {
+                return rightLowerCorner;
+            } else if (pattern.equals("1001")){
+                return rightUpperCorner;
+            } else if (pattern.equals("0011")) {
+                return updownTunnel;
+            } else if (pattern.equals("0101")) {
+                return leftUpperCorner;
+            } else if (pattern.equals("0110")) {
+                return leftLowerCorner;
+            } else if (pattern.equals("1110")) {
+                return lowerWall;
+            } else if (pattern.equals( "1101")) {
+                return upperWall;
+            } else if (pattern.equals( "1011")) {
+                return rightWall;
+            } else if (pattern.equals( "0111")) {
+                return leftWall;
+            } else if (pattern.equals( "1111")) {
+                return allWall;
+            }else if (pattern.equals( "0000")) {
+                return allWall;
+            }
+          return 0;
+        }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
