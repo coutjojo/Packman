@@ -25,9 +25,9 @@ public class Player extends Creature {
     private Handler handler;
 
     public Player(Handler handler) {
-        //super(handler.getGame().getGameState().getWorld().getSpawnX(), handler.getGame().getGameState().getWorld().getSpawnY());
-        super(50,50, new Rectangle(50,50));
+        super(50,50,null);
         this.handler = handler;
+        collisionBOX = new Rectangle(width,height);
     }
 
     @Override
@@ -60,11 +60,16 @@ public class Player extends Creature {
                 xMove = 0;
             else
                 xMove = xMoveOLD;
+
             if(yMove == yMoveOLD)
                 yMove = 0;
             else
                 yMove = yMoveOLD;
+
+            xMoveOLD = 0;
+            yMoveOLD = 0;
         }
+        // adjust the viewing direction
         if(xMove > 0)
             lookingAT = lookingRIGHT;
         if(xMove < 0)
@@ -73,38 +78,39 @@ public class Player extends Creature {
             lookingAT = lookintDOWN;
         if(yMove < 0)
             lookingAT = lookingUP;
+
         posX += xMove;
         posY += yMove;
     }
 
     private boolean collide() {
-        if(xMove > 1) {
-            if((posX + width + SPEED) > (handler.getGame().getGameState().getWorld().getWitdh() * Tile.TILEWIDTH))
+        if(xMove > 1) { // if collide when moving right
+            if((posX + width + SPEED) >= (handler.getGame().getGameState().getWorld().getWitdh() * Tile.TILEWIDTH)) // leaving on the right
                 return true;
-            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX + width + SPEED) / Tile.TILEWIDTH),   (int) ((posY) / Tile.TILEHEIGHT))).isSolid())
+            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX + width + SPEED) / Tile.TILEWIDTH),   (int) ((posY) / Tile.TILEHEIGHT))).isSolid()) // if solid-Tile right-up
                 return true;
-            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX + width + SPEED) / Tile.TILEWIDTH),   (int) ((posY + height) / Tile.TILEHEIGHT))).isSolid())
+            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX + width + SPEED) / Tile.TILEWIDTH),   (int) ((posY + height) / Tile.TILEHEIGHT))).isSolid()) // if solid-Tile right-up
                 return true;
-        } else if (xMove < -1) {
-            if(posX < 0)
+        } else if (xMove < -1) { // if collide when moving left
+            if(posX <= 0) // leaving on the left
                 return true;
-            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX - SPEED) / Tile.TILEWIDTH),           (int)((posY) / Tile.TILEHEIGHT))).isSolid())
+            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX - SPEED) / Tile.TILEWIDTH),           (int)((posY) / Tile.TILEHEIGHT))).isSolid()) // if solid-Tile left-up
                 return true;
-            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX - SPEED) / Tile.TILEWIDTH),           (int)((posY + height) / Tile.TILEHEIGHT))).isSolid())
+            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX - SPEED) / Tile.TILEWIDTH),           (int)((posY + height) / Tile.TILEHEIGHT))).isSolid()) // if solid-Tile left-down
                 return true;
-        } else if (yMove > 1) {
-            if((posY + height + SPEED) > (handler.getGame().getGameState().getWorld().getHeight() * Tile.TILEHEIGHT))
+        } else if (yMove > 1) { // if collide when moving down
+            if((posY + height + SPEED) >= (handler.getGame().getGameState().getWorld().getHeight() * Tile.TILEHEIGHT)) // leaving on the bottom
                 return true;
-            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX) / Tile.TILEWIDTH),                   (int)((posY + height + SPEED) / Tile.TILEHEIGHT))).isSolid())
+            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX) / Tile.TILEWIDTH),                   (int)((posY + height + SPEED) / Tile.TILEHEIGHT))).isSolid()) // if solid-Tile bottom-left
                 return true;
-            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX + width) / Tile.TILEWIDTH),           (int)((posY + height + SPEED) / Tile.TILEHEIGHT))).isSolid())
+            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX + width) / Tile.TILEWIDTH),           (int)((posY + height + SPEED) / Tile.TILEHEIGHT))).isSolid()) // if solid-Tile bottom-right
                 return true;
-        } else if (yMove < -1) {
-            if(posY < 0)
+        } else if (yMove < -1) { // if collide when moving up
+            if(posY <= 0) // leaving on the top
                 return true;
-            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX) / Tile.TILEWIDTH),                   (int)((posY - SPEED) / Tile.TILEHEIGHT))).isSolid())
+            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX) / Tile.TILEWIDTH),                   (int)((posY - SPEED) / Tile.TILEHEIGHT))).isSolid()) // if solid-Tile top-left
                 return true;
-            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX + width) / Tile.TILEWIDTH),           (int)((posY - SPEED) / Tile.TILEHEIGHT))).isSolid())
+            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX + width) / Tile.TILEWIDTH),           (int)((posY - SPEED) / Tile.TILEHEIGHT))).isSolid()) // if solid-Tile top-right
                 return true;
         }
         return false;
