@@ -33,6 +33,10 @@ public class Input implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+        this.UP = false;
+        this.DOWN = false;
+        this.RIGHT = false;
+        this.LEFT = false;
     }
 
     private void resetUDRL(){

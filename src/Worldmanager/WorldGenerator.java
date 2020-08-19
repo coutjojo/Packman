@@ -1,5 +1,6 @@
 package Worldmanager;
 
+import Main.Handler;
 import Tiles.Tile;
 import Utility.CustomFileReader;
 
@@ -9,24 +10,26 @@ public class WorldGenerator {
  private int[][] worldGrid;
  private int witdh = 5,height = 5;
  private int spawnX, spawnY;
- public static int upperWall = 1;
- public static int rightWall = 2;
- public static int leftWall = 3;
- public static int lowerWall = 4;
- public static int upperU = 9;
- public static int rightU = 10;
- public static int leftU = 11;
- public static int lowerU = 12;
- public static int rightUpperCorner = 5;
- public static int rightLowerCorner = 6;
- public static int leftUpperCorner = 7;
- public static int leftLowerCorner = 8;
- public static int updownTunnel = 14;
- public static int rightleftTunnel = 15;
- public static int ground = 0;
- public static int allWall = 13;
- /////////////////////////////////////////////////////////Class
- public WorldGenerator(String path){
+ private Handler handler;
+    public static int upperWall = 1;
+    public static int rightWall = 2;
+    public static int leftWall = 3;
+    public static int lowerWall = 4;
+    public static int upperU = 9;
+    public static int rightU = 10;
+    public static int leftU = 11;
+    public static int lowerU = 12;
+    public static int rightUpperCorner = 5;
+    public static int rightLowerCorner = 6;
+    public static int leftUpperCorner = 7;
+    public static int leftLowerCorner = 8;
+    public static int updownTunnel = 14;
+    public static int rightleftTunnel = 15;
+    public static int groundTile = 0;
+    public static int allWall = 13;
+    /////////////////////////////////////////////////////////Class
+    public WorldGenerator(String path, Handler handler){
+        this.handler = handler;
         genWorld(path);
 
     }
@@ -147,6 +150,34 @@ public class WorldGenerator {
             }
           return 0;
         }
+
+
+    //GETTER & SETTER
+
+    public void setWorldGrid(int[][] worldGrid) {
+        this.worldGrid = worldGrid;
+    }
+    public int getSpawnX() {
+        return spawnX;
+    }
+    public int getSpawnY() {
+        return spawnY;
+    }
+    public int[][] getWorldGrid() {
+        return worldGrid;
+    }
+    public void setSpawnX(int spawnX) {
+        this.spawnX = spawnX;
+    }
+    public void setSpawnY(int spawnY) {
+        this.spawnY = spawnY;
+    }
+    public int getWitdh() {
+        return witdh;
+    }
+    public int getHeight() {
+        return height;
+    }
 }
 
 

@@ -1,9 +1,10 @@
+package Main;
+
 import ImageLoad.Assets;
 import Input.Input;
 import PackmanUi.Window;
 import States.GameState;
 import States.State;
-import Worldmanager.WorldGenerator;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -13,11 +14,12 @@ public class Game {
     private Graphics g;
     private BufferStrategy bs;
     private boolean running = true;
-    private State gameState;
-    private WorldGenerator worldGenerator;
+    private GameState gameState;
+    Handler handler;
     //////////////////////////////////////////////////////////////////////
     public Game(){
         window = new Window();
+        handler = new Handler(this);
         gameLoop();
 
     }
@@ -50,8 +52,9 @@ public class Game {
             }
         }
     }
+
     private void init(){
-        gameState = new GameState();
+        gameState = new GameState(handler);
         State.setState(gameState);
         Assets.init();
         window.addKeyListener(new Input());
@@ -78,5 +81,13 @@ public class Game {
             State.getState().tick();
         }
 
+    }
+
+    //GETTER & SETTER
+    public Window getWindow() {
+        return window;
+    }
+    public GameState getGameState() {
+        return gameState;
     }
 }
