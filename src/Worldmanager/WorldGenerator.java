@@ -11,6 +11,7 @@ public class WorldGenerator {
  private int witdh = 5,height = 5;
  private int spawnX, spawnY;
  private Handler handler;
+ private PowerupManager powerupManager;
     public static int upperWall = 1;
     public static int rightWall = 2;
     public static int leftWall = 3;
@@ -31,7 +32,7 @@ public class WorldGenerator {
     public WorldGenerator(String path, Handler handler){
         this.handler = handler;
         genWorld(path);
-
+        powerupManager = new PowerupManager(this);
     }
     public void genWorld(String path){
         String file = CustomFileReader.loadFileAsString(path);
@@ -64,6 +65,7 @@ public class WorldGenerator {
                 getTile(x,y).render(g,x * Tile.TILEWIDTH,y *Tile.TILEHEIGHT);
             }
         }
+        powerupManager.render(g);
     }
     public void modifyWorld(int[][] world) {
         String pattern = "";//LEFT RIGHT UP DOWN
