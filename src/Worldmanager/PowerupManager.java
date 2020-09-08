@@ -31,6 +31,7 @@ public class PowerupManager {
                     }
                     endX =  getlocation(x, y)[0];
                     lines[nextFree] = startX+" "+startY+" "+length+" "+endX;
+                    System.out.println(startX+" "+startY+" "+length+" "+endX);
                     nextFree++;
                     length = 0;
                 }
@@ -40,15 +41,19 @@ public class PowerupManager {
 
     public int[] getlocation(int x, int y) {
         int[] res = new int[2];
-        res[0] = (x-1)*50+25;
-        res[1] = (y)*50+25;
+        if (x == 0||x == 1){
+            res[0] = 75;
+        }else{res[0] = (x-1)*50+25;}
+        if (y == 0||y == 1){
+            res[1] = 75;
+        }else{res[1] = (y-1)*50+25;}
     return res;
     }
     public void render(Graphics g){
         for (int i = 0; i < lines.length ; i++) {
             if (lines[i] != null) {
                 int[] line = transformToIntArray(lines[i].split(" "));
-                int times = line[3] - line[0] / 15;
+                int times = line[3] - line[0] / 20;
                 int xPos = line[0];
                 while (times > 0) {
                     g.setColor(Color.yellow);
