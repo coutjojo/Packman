@@ -65,7 +65,7 @@ public class WorldGenerator {
                 getTile(x,y).render(g,x * Tile.TILEWIDTH,y *Tile.TILEHEIGHT);
             }
         }
-        powerupManager.render(g);
+    powerupManager.render(g);
     }
     public void modifyWorld(int[][] world) {
         String pattern = "";//LEFT RIGHT UP DOWN

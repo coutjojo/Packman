@@ -1,20 +1,50 @@
 package Worldmanager;
 
-import EntitySystem.Item;
+import EntitySystem.Dot;
 
-import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class PowerupManager {
-    private JList<Item> i;
+    private ArrayList<Dot> items;
     private WorldGenerator world;
-    private String[] lines = new String[50];
-    private int nextFree = 0  ;//defines the next free index in Lines
+    private ArrayList<String> emptyTiles; //xCordinate + " " + yCordinate
+   // private String[] lines = new String[50];
+    //private int nextFree = 0  ;//defines the next free index in Lines
     public PowerupManager(WorldGenerator world) {
         this.world = world;
+        emptyTiles = new ArrayList<String>();
+        items = new ArrayList<Dot>();
         initDots();
     }
 
+    public void initDots(){
+        findEmptySpaces();
+        for (String i:emptyTiles){
+            String[] Tile = i.split(" ");
+            int x,y;
+            x= Integer.parseInt(Tile[0]);
+            y= Integer.parseInt(Tile[1]);
+            items.add(new Dot(x*50+25,y*50+25,'D'));
+        }
+    }
+
+
+    public void findEmptySpaces(){
+        for (int x = 0; x < world.getWitdh(); x++) {
+            for (int y = 0; y <world.getHeight() ; y++) {
+                if(world.getWorldGrid()[x][y] ==  0){
+                   emptyTiles.add(x+" "+y);
+                }
+            }
+        }
+    }
+    public void render(Graphics g){
+        for (Dot i:items){
+            i.render(g);
+        }
+    }
+/*
     public void initDots() {
         int startX = 0;
         int startY = 0;
@@ -53,7 +83,7 @@ public class PowerupManager {
         for (int i = 0; i < lines.length ; i++) {
             if (lines[i] != null) {
                 int[] line = transformToIntArray(lines[i].split(" "));
-                int times = line[3] - line[0] / 20;
+                int times = line[2] - line[0] / 20;
                 int xPos = line[0];
                 while (times > 0) {
                     g.setColor(Color.yellow);
@@ -71,4 +101,6 @@ public class PowerupManager {
         }
         return res;
     }
+
+ */
 }
