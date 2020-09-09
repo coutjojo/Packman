@@ -6,6 +6,7 @@ import Main.Handler;
 import Tiles.Tile;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Player extends Creature {
     private float SPEED = 3.0f;
@@ -23,11 +24,15 @@ public class Player extends Creature {
 
     private Handler handler;
 
+    private int dotCounter = 0;
+    private ArrayList<Item> removedDots;
+
     public Player(Handler handler,int spawnX, int spwanY) {
         super(spawnX,spwanY,null);
         this.handler = handler;
         collisionBOX = new Rectangle(width,height);
         lookingAT = lookingRIGHT; // starting view direction
+        removedDots = new ArrayList<Item>();
     }
 
     @Override
@@ -53,6 +58,26 @@ public class Player extends Creature {
     public void tick() {
         this.getMove();
         this.move();
+        this.eatDot();
+    }
+
+    // Sind alle Dots in dots auf ein und demselben platz gespeichert
+    public void eatDot() {
+        if(handler.getWorld().getPowerupManager().getDots() ==  null)
+            return;
+        for (Item d : handler.getWorld().getPowerupManager().getDots()) {
+            System.out.println(1);
+            if(this.collisionBOX.intersects(d.collisionBOX)) {
+                System.out.println(2);
+                this.dotCounter += 1;
+                removedDots.add(d);
+                handler.getWorld().getPowerupManager().getEmptyPlaces().add(d);
+            }
+        }
+        for (Item d : removedDots) {
+            handler.getWorld().getPowerupManager().getDots().remove(d);
+        }
+        removedDots.clear();
     }
 
     public void move() {
@@ -137,5 +162,9 @@ public class Player extends Creature {
             xMove = -SPEED;
             yMove = 0;
         }
+    }
+
+    public int getDotCounter() {
+        return dotCounter;
     }
 }

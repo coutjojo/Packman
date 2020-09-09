@@ -49,6 +49,7 @@ public class Game {
                 timer = 0;
 
                 //ÜBERPRÜFUNG
+                System.out.println(handler.getGame().getGameState().getPlayer().getDotCounter());
             }
         }
     }

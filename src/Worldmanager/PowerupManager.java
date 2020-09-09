@@ -1,12 +1,14 @@
 package Worldmanager;
 
 import EntitySystem.Dot;
+import EntitySystem.Item;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class PowerupManager {
-    private ArrayList<Dot> items;
+    private ArrayList<Item> dots;
+    private ArrayList<Item> emptyPlaces;
     private WorldGenerator world;
     private ArrayList<String> emptyTiles; //xCordinate + " " + yCordinate
    // private String[] lines = new String[50];
@@ -14,7 +16,8 @@ public class PowerupManager {
     public PowerupManager(WorldGenerator world) {
         this.world = world;
         emptyTiles = new ArrayList<String>();
-        items = new ArrayList<Dot>();
+        dots = new ArrayList<Item>();
+        emptyPlaces = new ArrayList<Item>();
         initDots();
     }
 
@@ -25,7 +28,7 @@ public class PowerupManager {
             int x,y;
             x= Integer.parseInt(Tile[0]);
             y= Integer.parseInt(Tile[1]);
-            items.add(new Dot(x*50+25,y*50+25,'D'));
+            dots.add(new Dot(x*50+25,y*50+25,'D'));
         }
     }
 
@@ -40,7 +43,7 @@ public class PowerupManager {
         }
     }
     public void render(Graphics g){
-        for (Dot i:items){
+        for (Item i:dots){
             i.render(g);
         }
     }
@@ -103,4 +106,11 @@ public class PowerupManager {
     }
 
  */
+
+    public ArrayList<Item> getDots() {
+        return dots;
+    }
+    public ArrayList<Item> getEmptyPlaces() {
+        return emptyPlaces;
+    }
 }
