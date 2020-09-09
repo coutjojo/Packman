@@ -1,8 +1,9 @@
 package States;
 
 import EntitySystem.Player;
-import Worldmanager.WorldGenerator;
 import Main.Handler;
+import Worldmanager.WorldGenerator;
+
 import java.awt.*;
 
 public class GameState extends State {
@@ -18,7 +19,7 @@ public class GameState extends State {
     public GameState(Handler handler){
         super(handler);
         world = new WorldGenerator("res/worlds/World1.txt",handler);
-        player = new Player(handler);
+        player = new Player(handler, world.getSpawnX(),world.getSpawnY());
 
     }
 

@@ -23,8 +23,8 @@ public class Player extends Creature {
 
     private Handler handler;
 
-    public Player(Handler handler) {
-        super(50,50,null);
+    public Player(Handler handler,int spawnX, int spwanY) {
+        super(spawnX,spwanY,null);
         this.handler = handler;
         collisionBOX = new Rectangle(width,height);
         lookingAT = lookingRIGHT; // starting view direction
