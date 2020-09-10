@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Player extends Creature {
-    private float SPEED = 3.0f;
+    private static float SPEED = 3.0f;
     // Attributes for the Movement
     private float xMove;
     private float yMove;
@@ -28,7 +28,7 @@ public class Player extends Creature {
     private Handler handler;
 
     public Player(Handler handler,int spawnX, int spwanY) {
-        super(spawnX,spwanY,47,47);
+        super(spawnX, spwanY, Tile.TILEWIDTH - (int) SPEED, Tile.TILEHEIGHT - (int) SPEED);
         this.handler = handler;
         lookingAT = lookingRIGHT; // starting view direction
         removedDots = new ArrayList<Item>();
@@ -81,17 +81,17 @@ public class Player extends Creature {
      * otherwise nothing happened
      */
     public void eatDot() {
-        if(handler.getWorld().getPowerupManager().getDots() ==  null)
+        if (handler.getWorld().getPowerupManager().getItems() == null)
             return;
-        for (Item d : handler.getWorld().getPowerupManager().getDots()) {
-            if(this.collisionBOX.intersects(d.collisionBOX)) {
+        for (Item d : handler.getWorld().getPowerupManager().getItems()) {
+            if (this.collisionBOX.intersects(d.collisionBOX)) {
                 this.dotCounter += 1;
                 removedDots.add(d);
                 handler.getWorld().getPowerupManager().getEmptyPlaces().add(d);
             }
         }
         for (Item d : removedDots) {
-            handler.getWorld().getPowerupManager().getDots().remove(d);
+            handler.getWorld().getPowerupManager().getItems().remove(d);
         }
         removedDots.clear();
     }
