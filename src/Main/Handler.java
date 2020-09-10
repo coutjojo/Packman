@@ -5,7 +5,7 @@ import Worldmanager.WorldGenerator;
 public class Handler {
 
     private Game game;
-    private WorldGenerator world;
+
     public Handler(Game game) {
         this.game = game;
     }
@@ -15,6 +15,5 @@ public class Handler {
         return game;
     }
 
-    public WorldGenerator getWorld(){return world;}
-    public void setWorld(WorldGenerator world){this.world = world;}
+    public WorldGenerator getWorld(){return game.getGameState().getWorld();}
 }

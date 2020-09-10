@@ -6,28 +6,32 @@ import Main.Handler;
 import Tiles.Tile;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Player extends Creature {
-    private float SPEED = 3.0f;
-
+    private static float SPEED = 3.0f;
+    // Attributes for the Movement
     private float xMove;
     private float yMove;
     private float xMoveOLD;
     private float yMoveOLD;
-
+    // Attributes for the looking
     private final int lookingRIGHT = 0;
     private final int lookingLEFT = 1;
     private final int lookingDOWN = 2;
     private final int lookingUP = 3;
     private int lookingAT;
-
+    //Attributes for the Dots
+    private int dotCounter = 0;
+    private ArrayList<Item> removedDots;
+    //Extras
     private Handler handler;
 
     public Player(Handler handler,int spawnX, int spwanY) {
-        super(spawnX,spwanY,null);
+        super(spawnX, spwanY, Tile.TILEWIDTH - (int) SPEED, Tile.TILEHEIGHT - (int) SPEED);
         this.handler = handler;
-        collisionBOX = new Rectangle(width,height);
         lookingAT = lookingRIGHT; // starting view direction
+        removedDots = new ArrayList<Item>();
     }
 
     @Override
@@ -47,16 +51,58 @@ public class Player extends Creature {
                 g.drawImage(Assets.packman_DOWN,(int) posX,(int) posY,width,height,null);
                 break;
         }
+        //DotCounter on Sreen
+        g.setColor(Color.YELLOW);
+        g.setFont(new Font("Arial",Font.BOLD,36));
+        g.drawString("" + this.dotCounter,(handler.getWorld().getWitdh() - 2) * Tile.TILEWIDTH,(int) (Tile.TILEHEIGHT * 0.80));
+        /* //CollisionBOX showing
+        {
+            // collisionBox Packman
+            g.setColor(Color.RED);
+            g.drawRect(collisionBOX.x,collisionBOX.y,collisionBOX.width,collisionBOX.height);
+            // collisionBox Dots
+            for (Item d : handler.getWorld().getPowerupManager().getDots()) {
+                g.setColor(Color.GREEN);
+                g.drawOval(d.collisionBOX.x,d.collisionBOX.y,d.collisionBOX.width,d.collisionBOX.height);
+            }
+        }
+        */
     }
 
     @Override
     public void tick() {
         this.getMove();
         this.move();
+        this.eatDot();
     }
 
+    /**
+     * test if Packman is above a Dot, if it is true the Dot is deleted and the dotCounter is increased
+     * otherwise nothing happened
+     */
+    public void eatDot() {
+        if (handler.getWorld().getPowerupManager().getItems() == null)
+            return;
+        for (Item d : handler.getWorld().getPowerupManager().getItems()) {
+            if (this.collisionBOX.intersects(d.collisionBOX)) {
+                this.dotCounter += 1;
+                removedDots.add(d);
+                handler.getWorld().getPowerupManager().getEmptyPlaces().add(d);
+            }
+        }
+        for (Item d : removedDots) {
+            handler.getWorld().getPowerupManager().getItems().remove(d);
+        }
+        removedDots.clear();
+    }
+
+    /**
+     * test if the movement is possible
+     * adjust the Looking
+     * apply xMove and yMove onto posX and posY
+     */
     public void move() {
-        if (collide()) { //
+        if (collide()) { //test the collision
             if (xMove == xMoveOLD) // canceling xMove, if collide
                 xMove = 0;
             else // set xMove to xMoveOLD, if collision was not on the x-Axis
@@ -81,8 +127,13 @@ public class Player extends Creature {
         // change the position with xMove and yMove
         posX += xMove;
         posY += yMove;
+        collisionBOX.setLocation((int) posX,(int) posY);
     }
 
+    /**
+     * Test if Packman is colliding in the next move
+     * @return true if Packman collide, otherwise false
+     */
     private boolean collide() {
         if(xMove > 0) { // if collide when moving right
             if((posX + width + SPEED) >= (handler.getGame().getGameState().getWorld().getWitdh() * Tile.TILEWIDTH)) // leaving on the right
@@ -116,12 +167,16 @@ public class Player extends Creature {
         return false;
     }
 
+    /**
+     * set MoveOLD
+     * translate the input in xMove and yMove
+     */
     public void getMove() {
         // set MoveOLD to the current Move
         yMoveOLD = yMove;
         xMoveOLD = xMove;
         // set Move to the new Input and reset the other Move
-        if(Input.UP) {
+        if (Input.UP) {
             yMove = -SPEED;
             xMove = 0;
         }
