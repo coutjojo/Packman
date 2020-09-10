@@ -109,7 +109,7 @@ public class WorldGenerator {
                         }
                     }
                     worldGrid[x][y] = getIdFromPattern(pattern);
-                    System.out.println("An der Stelle "+"x="+x+" "+"y="+y+" "+"ist das pattern"+pattern);
+                    //System.out.println("An der Stelle "+"x="+x+" "+"y="+y+" "+"ist das pattern"+pattern);
                     pattern ="";
                 }
             }
@@ -155,10 +155,6 @@ public class WorldGenerator {
 
 
     //GETTER & SETTER
-
-    public void setWorldGrid(int[][] worldGrid) {
-        this.worldGrid = worldGrid;
-    }
     public int getSpawnX() {
         return spawnX;
     }
@@ -167,12 +163,6 @@ public class WorldGenerator {
     }
     public int[][] getWorldGrid() {
         return worldGrid;
-    }
-    public void setSpawnX(int spawnX) {
-        this.spawnX = spawnX;
-    }
-    public void setSpawnY(int spawnY) {
-        this.spawnY = spawnY;
     }
     public int getWitdh() {
         return witdh;
