@@ -9,12 +9,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Player extends Creature {
-    private static float SPEED = 3.0f;
-    // Attributes for the Movement
-    private float xMove;
-    private float yMove;
-    private float xMoveOLD;
-    private float yMoveOLD;
     // Attributes for the looking
     private final int lookingRIGHT = 0;
     private final int lookingLEFT = 1;
@@ -24,12 +18,9 @@ public class Player extends Creature {
     //Attributes for the Dots
     private int dotCounter = 0;
     private ArrayList<Item> removedDots;
-    //Extras
-    private Handler handler;
 
     public Player(Handler handler,int spawnX, int spwanY) {
-        super(spawnX, spwanY, Tile.TILEWIDTH - (int) SPEED, Tile.TILEHEIGHT - (int) SPEED);
-        this.handler = handler;
+        super(handler, spawnX, spwanY, Tile.TILEWIDTH, Tile.TILEHEIGHT, 3.0f);
         lookingAT = lookingRIGHT; // starting view direction
         removedDots = new ArrayList<Item>();
     }
@@ -81,17 +72,17 @@ public class Player extends Creature {
      * otherwise nothing happened
      */
     public void eatDot() {
-        if (handler.getWorld().getPowerupManager().getItems() == null)
+        if (super.handler.getWorld().getPowerupManager().getItems() == null)
             return;
-        for (Item d : handler.getWorld().getPowerupManager().getItems()) {
+        for (Item d : super.handler.getWorld().getPowerupManager().getItems()) {
             if (this.collisionBOX.intersects(d.collisionBOX)) {
                 this.dotCounter += 1;
                 removedDots.add(d);
-                handler.getWorld().getPowerupManager().getEmptyPlaces().add(d);
+                super.handler.getWorld().getPowerupManager().getEmptyPlaces().add(d);
             }
         }
         for (Item d : removedDots) {
-            handler.getWorld().getPowerupManager().getItems().remove(d);
+            super.handler.getWorld().getPowerupManager().getItems().remove(d);
         }
         removedDots.clear();
     }
@@ -102,16 +93,16 @@ public class Player extends Creature {
      * apply xMove and yMove onto posX and posY
      */
     public void move() {
-        if (collide()) { //test the collision
-            if (xMove == xMoveOLD) // canceling xMove, if collide
-                xMove = 0;
+        if (super.collide() != NoCollision) { //test the collision
+            if (super.xMove == super.xMoveOLD) // canceling xMove, if collide
+                super.xMove = 0;
             else // set xMove to xMoveOLD, if collision was not on the x-Axis
-                xMove = xMoveOLD;
+                super.xMove = super.xMoveOLD;
 
-            if(yMove == yMoveOLD) // canceling yMove, if collide
-                yMove = 0;
+            if(super.yMove == super.yMoveOLD) // canceling yMove, if collide
+                super.yMove = 0;
             else // set yMove to yMoveOLD, if collision was not on the y-Axis
-                yMove = yMoveOLD;
+                super.yMove = super.yMoveOLD;
         }
 
         // adjust the viewing direction
@@ -125,46 +116,9 @@ public class Player extends Creature {
             lookingAT = lookingUP;
 
         // change the position with xMove and yMove
-        posX += xMove;
-        posY += yMove;
-        collisionBOX.setLocation((int) posX,(int) posY);
-    }
-
-    /**
-     * Test if Packman is colliding in the next move
-     * @return true if Packman collide, otherwise false
-     */
-    private boolean collide() {
-        if(xMove > 0) { // if collide when moving right
-            if((posX + width + SPEED) >= (handler.getGame().getGameState().getWorld().getWitdh() * Tile.TILEWIDTH)) // leaving on the right
-                return true;
-            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX + width + SPEED) / Tile.TILEWIDTH),   (int) ((posY) / Tile.TILEHEIGHT))).isSolid()) // if solid-Tile right-up
-                return true;
-            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX + width + SPEED) / Tile.TILEWIDTH),   (int) ((posY + height) / Tile.TILEHEIGHT))).isSolid()) // if solid-Tile right-up
-                return true;
-        } else if (xMove < 0) { // if collide when moving left
-            if(posX <= 0) // leaving on the left
-                return true;
-            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX - SPEED) / Tile.TILEWIDTH),           (int)((posY) / Tile.TILEHEIGHT))).isSolid()) // if solid-Tile left-up
-                return true;
-            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX - SPEED) / Tile.TILEWIDTH),           (int)((posY + height) / Tile.TILEHEIGHT))).isSolid()) // if solid-Tile left-down
-                return true;
-        } else if (yMove > 0) { // if collide when moving down
-            if((posY + height + SPEED) >= (handler.getGame().getGameState().getWorld().getHeight() * Tile.TILEHEIGHT)) // leaving on the bottom
-                return true;
-            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX) / Tile.TILEWIDTH),                   (int)((posY + height + SPEED) / Tile.TILEHEIGHT))).isSolid()) // if solid-Tile bottom-left
-                return true;
-            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX + width) / Tile.TILEWIDTH),           (int)((posY + height + SPEED) / Tile.TILEHEIGHT))).isSolid()) // if solid-Tile bottom-right
-                return true;
-        } else if (yMove < 0) { // if collide when moving up
-            if(posY <= 0) // leaving on the top
-                return true;
-            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX) / Tile.TILEWIDTH),                   (int)((posY - SPEED) / Tile.TILEHEIGHT))).isSolid()) // if solid-Tile top-left
-                return true;
-            else if((handler.getGame().getGameState().getWorld().getTile((int)((posX + width) / Tile.TILEWIDTH),           (int)((posY - SPEED) / Tile.TILEHEIGHT))).isSolid()) // if solid-Tile top-right
-                return true;
-        }
-        return false;
+        super.posX += super.xMove;
+        super.posY += super.yMove;
+        super.collisionBOX.setLocation((int) posX,(int) posY);
     }
 
     /**
@@ -173,24 +127,24 @@ public class Player extends Creature {
      */
     public void getMove() {
         // set MoveOLD to the current Move
-        yMoveOLD = yMove;
-        xMoveOLD = xMove;
+        super.yMoveOLD = super.yMove;
+        super.xMoveOLD = super.xMove;
         // set Move to the new Input and reset the other Move
         if (Input.UP) {
-            yMove = -SPEED;
-            xMove = 0;
+            super.yMove = -super.SPEED;
+            super.xMove = 0;
         }
         if (Input.DOWN) {
-            yMove = SPEED;
-            xMove = 0;
+            super.yMove = super.SPEED;
+            super.xMove = 0;
         }
         if (Input.RIGHT) {
-            xMove = SPEED;
-            yMove = 0;
+            super.xMove = super.SPEED;
+            super.yMove = 0;
         }
         if (Input.LEFT) {
-            xMove = -SPEED;
-            yMove = 0;
+            super.xMove = -super.SPEED;
+            super.yMove = 0;
         }
     }
 }

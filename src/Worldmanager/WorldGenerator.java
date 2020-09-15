@@ -32,7 +32,7 @@ public class WorldGenerator {
     public WorldGenerator(String path, Handler handler){
         this.handler = handler;
         genWorld(path);
-        powerupManager = new PowerupManager(this);
+        powerupManager = new PowerupManager(this, handler);
     }
     public void genWorld(String path){
         String file = CustomFileReader.loadFileAsString(path);
