@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class GameState extends State {
 
-    private final Player player;
+    private Player player;
     private WorldGenerator world;
     private Ghost ghost;
 
@@ -23,7 +23,6 @@ public class GameState extends State {
         world = new WorldGenerator("res/worlds/World1.txt",handler);
         player = new Player(handler, world.getSpawnX(),world.getSpawnY());
         ghost = new Ghost(handler,400,400);
-        ghost.startMove();
 
     }
 

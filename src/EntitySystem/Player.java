@@ -93,7 +93,8 @@ public class Player extends Creature {
      * apply xMove and yMove onto posX and posY
      */
     public void move() {
-        if (super.collide() != NoCollision) { //test the collision
+        // collision
+        if (super.collide(xMove, yMove) != NoCollision) { //test if collision
             if (super.xMove == super.xMoveOLD) // canceling xMove, if collide
                 super.xMove = 0;
             else // set xMove to xMoveOLD, if collision was not on the x-Axis
