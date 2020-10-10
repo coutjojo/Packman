@@ -5,30 +5,32 @@ import Main.Handler;
 import Tiles.Tile;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Ghost extends Creature {
     private String identifier;
 
-    private enum freeTiles {
-        Up,Down,Right,Left;
+    private enum Edirections {
+        Up, Right, Down, Left
     }
-    private freeTiles direction;
-    private freeTiles[] path;
+
+    private Edirections direction;
+    private Edirections[] path;
     private int currentPath;
 
     //////////////////////////////////
     public Ghost(Handler handler, float posX, float posY) {
-        super(handler,posX,posY, Tile.TILEWIDTH,Tile.TILEHEIGHT,3.0f);
+        super(handler, posX, posY, Tile.TILEWIDTH, Tile.TILEHEIGHT, 3.0f);
         //this.identifier = name;
         buildPath();
-        direction = freeTiles.Right;
+        direction = Edirections.Right;
         currentPath = 0;
     }
 
     public void render(Graphics g) {
-        g.drawImage(Assets.ghost1,(int) posX,(int) posY,width,height,null);
+        g.drawImage(Assets.ghost1, (int) posX, (int) posY, width, height, null);
         /*
-        {
+        { //collisionBOX
             g.setColor(Color.MAGENTA);
             g.fillRect(collisionBOX.x, collisionBOX.y, collisionBOX.width, collisionBOX.height);
         }
@@ -38,108 +40,77 @@ public class Ghost extends Creature {
     public void tick() {
         setMove();
         move();
-        if(this.collisionBOX.intersects(handler.getGame().getGameState().getPlayer().collisionBOX))
+        if (this.collisionBOX.intersects(handler.getGame().getGameState().getPlayer().collisionBOX))
             eatPlayer();
     }
 
+    /**
+     * Build a random path for the entity.
+     * Random direction right, left forward.
+     * Then add the direction on the current direction.
+     */
     private void buildPath() {
-        int u=0,d=0,r=0,l=0;
-        //int random = 0;
-        int[] a = {2,3,4,1,4,3,4,1,2,3,2,1,4,3,2,1,2,1,2,3,2,1,3,4,2,3,2,1,2,3,4,3,4,3};
-        path = new freeTiles[34];
-        for (int i=0;i<path.length;i++) {
-            //while (i > 2 && path[i] == path[i-1]) {
-                //random = (int) (Math.floorMod((int) (Math.random() * 100), 4));
-                if (a[i] == 4) {
-                    this.path[i] = freeTiles.Up;
-                    u++;
-                } else if (a[i] == 1) {
-                    this.path[i] = freeTiles.Down;
-                    d++;
-                } else if (a[i] == 2) {
-                    this.path[i] = freeTiles.Right;
-                    r++;
-                } else if (a[i] == 3) {
-                    this.path[i] = freeTiles.Left;
-                    l++;
-                } else {
-                    //System.out.println(r);
-                }
-            //}
+        // U R D L
+        // 1 2 3 4
+        int u = 0, r = 0, d = 0, l = 0;
+        path = new Edirections[34];
+        path[0] = Edirections.Down;
+        d++;
+        for (int i=1;i<path.length;i++) {
+            // generating direction
+            int dir = (new Random().nextInt(3)) - 1;
+            System.out.println("next direction: " + dir);
+            System.out.println("before direction: " + path[i-1].ordinal());
+            System.out.println("new direction: " + (path[i-1].ordinal() + dir));
+            dir = positiveValue(path[i-1].ordinal() + dir);
+            System.out.println("normalized direction: " + dir);
+            if(dir == 4) {
+                dir = 0;
+            }
+            // add direction to path
+            if (dir == 0) {
+                this.path[i] = Edirections.Up;
+                u++;
+            } else if (dir == 1) {
+                this.path[i] = Edirections.Down;
+                d++;
+            } else if (dir == 2) {
+                this.path[i] = Edirections.Right;
+                r++;
+            } else if (dir == 3) {
+                this.path[i] = Edirections.Left;
+                l++;
+            } else {
+                System.out.println("Not possible _dir_: " + dir);
+            }
         }
-        System.out.println("U: " + u +",D: " + d +",R: " + r +",L: " + l );
+        System.out.println("U: " + u + ",R: " + r + ",D: " + d + ",L: " + l + ", all: " + (u+d+r+l));
+        System.exit(1);
     }
 
+    private int positiveValue(int n) {
+        if(n >= 0)
+            return n;
+        return -n;
+    }
+
+    /**
+     * set direction to the next direction from the path-Array
+     */
     public void setDirection() {
-        if(currentPath >= path.length) {
+        if (currentPath >= path.length) {
             currentPath = 0;
         }
         direction = path[currentPath];
+        System.out.println(currentPath);
         currentPath++;
-        /*
-        int r = (int) (Math.random() * 4);
-        System.out.println(r);
-        if(xMove != 0 && yMove == 0) {
-            if(r == 2) {
-                direction = freeTiles.Up;
-                System.out.println("WW");
-            } else if(r == 3) {
-                direction = freeTiles.Down;
-            } else {
-                if((xMove / SPEED) == -1) {
-                    direction = freeTiles.Right;
-                } else if((xMove / SPEED) == 1) {
-                    direction = freeTiles.Left;
-                }
-            }
-        }
-        if(yMove != 0 && xMove == 0) {
-            if(r == 2) {
-                direction = freeTiles.Right;
-            } else if(r == 3) {
-                direction = freeTiles.Left;
-            } else {
-                if((yMove / SPEED) == -1) {
-                    direction = freeTiles.Down;
-                } else if((yMove / SPEED) == 1) {
-                    direction = freeTiles.Up;
-                }
-            }
-        }
-        if(yMove == 0 && xMove == 0) {
-            if(xMoveOLD != 0 && yMoveOLD == 0) {
-                System.out.println("WW");
-                if(r == 2) {
-                    direction = freeTiles.Up;
-                } else if(r == 3) {
-                    direction = freeTiles.Down;
-                } else {
-                    if((xMoveOLD / SPEED) == -1) {
-                        direction = freeTiles.Right;
-                    } else if((xMoveOLD / SPEED) == 1) {
-                        direction = freeTiles.Left;
-                    }
-                }
-            }
-            if(yMoveOLD != 0 && xMoveOLD == 0) {
-                System.out.println("QQ");
-                if(r == 2) {
-                    direction = freeTiles.Right;
-                } else if(r == 3) {
-                    direction = freeTiles.Left;
-                } else {
-                    if((yMoveOLD / SPEED) == -1) {
-                        direction = freeTiles.Down;
-                    } else if((yMoveOLD / SPEED) == 1) {
-                        direction = freeTiles.Up;
-                    }
-                }
-            }
-        }
-        System.out.println(direction.name());
-        */
     }
 
+    /**
+     * testing if move is possible,
+     * if it is impossible move is the Motion.
+     * if it is not possible OLDmove is the Motion.
+     */
     public void move() {
         // collision
         if (super.collide(xMove, yMove) != NoCollision) { //test if collision
@@ -148,17 +119,18 @@ public class Ghost extends Creature {
             else // set xMove to xMoveOLD, if collision was not on the x-Axis
                 super.xMove = super.xMoveOLD;
 
-            if(super.yMove == super.yMoveOLD) // canceling yMove, if collide
+            if (super.yMove == super.yMoveOLD) // canceling yMove, if collide
                 super.yMove = 0;
             else // set yMove to yMoveOLD, if collision was not on the y-Axis
                 super.yMove = super.yMoveOLD;
 
         }
-        if(collide(xMoveOLD, yMoveOLD) != NoCollision) {
+        if (collide(xMoveOLD, yMoveOLD) != NoCollision) {
             xMove = 0;
             yMove = 0;
         }
-        if(xMove == 0 && yMove == 0) {
+        if (xMove == 0 && yMove == 0) {
+//            System.out.println("change dir(move)");
             setDirection();
             return;
         }
@@ -167,6 +139,11 @@ public class Ghost extends Creature {
         super.collisionBOX.setLocation((int) posX, (int) posY);
     }
 
+    /**
+     * OLDMove is the current move
+     * if the motion of the entity has changed
+     *  setDirection is called and return out of the function that setDirection can finish before the product is called
+     */
     private void setMove() {
         // set MoveOLD to the current Move
         super.xMoveOLD = super.xMove;
@@ -174,23 +151,20 @@ public class Ghost extends Creature {
 
         // setDir
         System.out.println("Dir: " + direction);
-        if(direction.equals(freeTiles.Up) && yMove < 0) {
-            System.out.println("direction changed: UP");
+        //          the direction          &&   move
+        if (direction.equals(Edirections.Up) && yMove < 0 && false) {
             setDirection();
             return;
         }
-        if(direction.equals(freeTiles.Down) && yMove > 0) {
-            System.out.println("direction changed: Down");
+        if (direction.equals(Edirections.Down) && yMove > 0 && false) {
             setDirection();
             return;
         }
-        if(direction.equals(freeTiles.Right) && xMove > 0) {
-            System.out.println("direction changed: Right");
+        if (direction.equals(Edirections.Right) && xMove > 0 && false) {
             setDirection();
             return;
         }
-        if(direction.equals(freeTiles.Left) && xMove < 0) {
-            System.out.println("direction changed: Left");
+        if (direction.equals(Edirections.Left) && xMove < 0 && false) {
             setDirection();
             return;
         }
@@ -224,81 +198,3 @@ public class Ghost extends Creature {
 
     }
 }
-/*
-    move()
-        /
-        if(collide(xMove, yMove) != NoCollision) {
-            xMove = xMoveOLD;
-            yMove = yMoveOLD;
-        }
-        posX += xMove;
-        posY += yMove;
-        /
-        /
-        System.out.println("Dir: " + direction);
-        // change the position with xMove and yMove
-        if(collide(xMove, yMove) != NoCollision) {
-            if(collide(xMoveOLD, yMoveOLD) != NoCollision) {
-                setDirection(0);
-                return;
-            }
-            super.posX += super.xMove;
-            super.posY += super.yMove;
-        } else {
-            super.posX += super.xMoveOLD;
-            super.posY += super.yMoveOLD;
-        }
-        super.posX += super.xMove;
-        super.posY += super.yMove;
-         /
-
-    setMove()
-        /
-        if(direction == Top) {
-            yMove = -SPEED;
-            xMove = 0;
-        }
-        if(direction == Down) {
-            yMove = SPEED;
-            xMove = 0;
-        }
-        if(direction == Right) {
-            xMove = SPEED;
-            yMove = 0;
-        }
-        if(direction == Left) {
-            xMove = -SPEED;
-            yMove = 0;
-        }
-        /
-
-    setDirection()
-        direction = (int) (Math.round(Math.random() * 4));
-        dirChanged = false;
-        /
-        int a = 5;
-        System.out.println("Vordir: " + direction);
-        while(a > 0 && direction == directionFront && direction == directionBack && direction == 4) {
-            direction = (int) (Math.round(Math.random() * 4));
-            System.out.println("dir: " + direction);
-            a--;
-        }
-        if(direction == Top) {
-            directionFront = Top;
-            directionBack = Down;
-        }
-        if(direction == Down) {
-            directionFront = Down;
-            directionBack = Top;
-        }
-        if(direction == Right) {
-            directionFront = Right;
-            directionBack = Left;
-        }
-        if(direction == Left) {
-            directionFront = Left;
-            directionBack = Right;
-        }
-        dirChanged = false;
-         /
- */
