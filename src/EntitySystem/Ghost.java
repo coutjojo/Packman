@@ -3,12 +3,12 @@ package EntitySystem;
 import ImageLoad.Assets;
 import Main.Handler;
 import Tiles.Tile;
+import Utility.OwnMath;
 
 import java.awt.*;
 import java.util.Random;
 
 public class Ghost extends Creature {
-    private String identifier;
 
     private enum Edirections {
         Up, Right, Down, Left
@@ -21,10 +21,9 @@ public class Ghost extends Creature {
     //////////////////////////////////
     public Ghost(Handler handler, float posX, float posY) {
         super(handler, posX, posY, Tile.TILEWIDTH, Tile.TILEHEIGHT, 3.0f);
-        //this.identifier = name;
         buildPath();
-        direction = Edirections.Right;
         currentPath = 0;
+        setDirection();
     }
 
     public void render(Graphics g) {
@@ -50,48 +49,50 @@ public class Ghost extends Creature {
      * Then add the direction on the current direction.
      */
     private void buildPath() {
-        // U R D L
-        // 1 2 3 4
-        int u = 0, r = 0, d = 0, l = 0;
+        int u = 0, r = 0, d = 0, l = 0; // u=0,r=1,d=2,l=3
         path = new Edirections[34];
         path[0] = Edirections.Down;
         d++;
         for (int i=1;i<path.length;i++) {
             // generating direction
-            int dir = (new Random().nextInt(3)) - 1;
-            System.out.println("next direction: " + dir);
-            System.out.println("before direction: " + path[i-1].ordinal());
-            System.out.println("new direction: " + (path[i-1].ordinal() + dir));
-            dir = positiveValue(path[i-1].ordinal() + dir);
-            System.out.println("normalized direction: " + dir);
-            if(dir == 4) {
-                dir = 0;
-            }
+            int dir = generatingDirection(3,path[i-1].ordinal());
             // add direction to path
             if (dir == 0) {
                 this.path[i] = Edirections.Up;
                 u++;
             } else if (dir == 1) {
-                this.path[i] = Edirections.Down;
-                d++;
-            } else if (dir == 2) {
                 this.path[i] = Edirections.Right;
                 r++;
+            } else if (dir == 2) {
+                this.path[i] = Edirections.Down;
+                d++;
             } else if (dir == 3) {
                 this.path[i] = Edirections.Left;
                 l++;
             } else {
-                System.out.println("Not possible _dir_: " + dir);
+                System.out.println("[ERROR]" + "Not possible _dir_: " + dir);
+                System.exit(1);
             }
+            System.out.println(path[i].name());
         }
         System.out.println("U: " + u + ",R: " + r + ",D: " + d + ",L: " + l + ", all: " + (u+d+r+l));
-        System.exit(1);
     }
 
-    private int positiveValue(int n) {
-        if(n >= 0)
-            return n;
-        return -n;
+    /**
+     * generating a random direction based on the forerunner direction
+     */
+    private int generatingDirection(int maxdirections, int forerunnerDirection) {
+        int dir = (new Random().nextInt(maxdirections)) - 1;
+        System.out.println("next direction: " + dir);
+        System.out.println("before direction: " + forerunnerDirection);
+        System.out.println("new direction: " + (forerunnerDirection + dir));
+        dir = OwnMath.positiveValue(forerunnerDirection + dir);
+        System.out.println("normalized direction: " + dir);
+        if(dir == 4) {
+            dir = 0;
+        }
+        System.out.println("final direction: " + dir);
+        return dir;
     }
 
     /**
@@ -152,19 +153,19 @@ public class Ghost extends Creature {
         // setDir
         System.out.println("Dir: " + direction);
         //          the direction          &&   move
-        if (direction.equals(Edirections.Up) && yMove < 0 && false) {
+        if (direction.equals(Edirections.Up) && yMove < 0) {
             setDirection();
             return;
         }
-        if (direction.equals(Edirections.Down) && yMove > 0 && false) {
+        if (direction.equals(Edirections.Down) && yMove > 0) {
             setDirection();
             return;
         }
-        if (direction.equals(Edirections.Right) && xMove > 0 && false) {
+        if (direction.equals(Edirections.Right) && xMove > 0) {
             setDirection();
             return;
         }
-        if (direction.equals(Edirections.Left) && xMove < 0 && false) {
+        if (direction.equals(Edirections.Left) && xMove < 0) {
             setDirection();
             return;
         }
@@ -194,7 +195,4 @@ public class Ghost extends Creature {
 
     }
 
-    public void killedByPlayer() {
-
-    }
 }
