@@ -11,18 +11,14 @@ public class GameState extends State {
 
     private Player player;
     private WorldGenerator world;
-    private Ghost ghost;
-
-    public GameState setWorld(WorldGenerator world) {
-        this.world = world;
-        return this;
-    }
+    private Ghost[] ghosts;
 
     public GameState(Handler handler){
         super(handler);
         world = new WorldGenerator("res/worlds/World1.txt",handler);
-        player = new Player(handler, world.getSpawnX(),world.getSpawnY());
-        ghost = new Ghost(handler,400,400);
+        player = new Player(handler, world.getSpawnX(),world.getSpawnY(),3.0f);
+        ghosts = new Ghost[world.getGhostCount()];
+        ghosts[0] = new Ghost(handler, world.getGhostSpawnX(), world.getGhostSpawnY(),3.0f);
 
     }
 
@@ -30,20 +26,27 @@ public class GameState extends State {
     public void tick() {
         world.tick();
         player.tick();
-        ghost.tick();
+        for (Ghost ghost : ghosts) {
+            ghost.tick();
+        }
     }
 
     @Override
     public void render(Graphics g) {
         world.render(g);
         player.render(g);
-        ghost.render(g);
+        for (Ghost ghost : ghosts) {
+            ghost.render(g);
+        }
     }
 
 
     //GETTER & SETTER
     public Player getPlayer() {
         return player;
+    }
+    public Ghost[] getGhosts() {
+        return ghosts;
     }
 
     public WorldGenerator getWorld() {

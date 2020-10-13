@@ -7,10 +7,17 @@ public abstract class Creature extends Entity{
     protected int width, height;
     // Attributes for the Movement
     protected static float SPEED;
-    protected float xMove;
-    protected float yMove;
-    protected float xMoveOLD;
-    protected float yMoveOLD;
+    protected float xMove; // +/- SPEED
+    protected float yMove; // +/- SPEED
+    protected float xMoveOLD; // +/- SPEED
+    protected float yMoveOLD; // +/- SPEED
+    // Attributes for the looking
+    protected int currentLooking;
+    protected int currentLookingBack;
+    protected final int lookingUP = 0;
+    protected final int lookingRIGHT = 1;
+    protected final int lookingDOWN = 2;
+    protected final int lookingLEFT = 3;
     // collision returns
     public static int NoCollision = 0;
     public static int TopCollision = 1;
@@ -60,5 +67,28 @@ public abstract class Creature extends Entity{
                 return TopCollision;
         }
         return NoCollision;
+    }
+
+    /**
+     * adjust the looking of the entity
+     */
+    protected void adjustLooking() {
+        // adjust the viewing direction
+        if(yMove < 0) { // Up
+            currentLooking = lookingUP;
+            currentLookingBack = lookingDOWN;
+        }
+        if(xMove > 0) { // Right
+            currentLooking = lookingRIGHT;
+            currentLookingBack = lookingLEFT;
+        }
+        if(yMove > 0) { // Down
+            currentLooking = lookingDOWN;
+            currentLookingBack = lookingUP;
+        }
+        if(xMove < 0) { // Left
+            currentLooking = lookingLEFT;
+            currentLookingBack = lookingRIGHT;
+        }
     }
 }

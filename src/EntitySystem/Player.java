@@ -9,26 +9,20 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Player extends Creature {
-    // Attributes for the looking
-    private final int lookingRIGHT = 0;
-    private final int lookingLEFT = 1;
-    private final int lookingDOWN = 2;
-    private final int lookingUP = 3;
-    private int lookingAT;
     //Attributes for the Dots
     private int dotCounter = 0;
     private ArrayList<Item> removedDots;
 
-    public Player(Handler handler,int spawnX, int spwanY) {
-        super(handler, spawnX, spwanY, Tile.TILEWIDTH, Tile.TILEHEIGHT, 3.0f);
-        lookingAT = lookingRIGHT; // starting view direction
+    public Player(Handler handler,int spawnX, int spwanY, float pSPEED) {
+        super(handler, spawnX, spwanY, Tile.TILEWIDTH, Tile.TILEHEIGHT, pSPEED);
+        currentLooking = lookingRIGHT; // starting view direction
         removedDots = new ArrayList<Item>();
     }
 
     @Override
     public void render(Graphics g) {
         // paint packman with his viewing direction (lookingAT)
-        switch (lookingAT) {
+        switch (currentLooking) {
             case lookingRIGHT:
                 g.drawImage(Assets.packman_RIGHT,(int) posX,(int) posY,width,height,null);
                 break;
@@ -105,17 +99,8 @@ public class Player extends Creature {
             else // set yMove to yMoveOLD, if collision was not on the y-Axis
                 super.yMove = super.yMoveOLD;
         }
-
-        // adjust the viewing direction
-        if(xMove > 0)
-            lookingAT = lookingRIGHT;
-        if(xMove < 0)
-            lookingAT = lookingLEFT;
-        if(yMove > 0)
-            lookingAT = lookingDOWN;
-        if(yMove < 0)
-            lookingAT = lookingUP;
-
+        //adjust looking
+        super.adjustLooking();
         // change the position with xMove and yMove
         super.posX += super.xMove;
         super.posY += super.yMove;
