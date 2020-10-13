@@ -158,6 +158,8 @@ public class Ghost extends Creature {
      * testing if move is possible,
      * if it is impossible move is the Motion.
      * if it is not possible OLDmove is the Motion.
+     *
+     * adjust looking
      */
     public void move() {
         // collision
