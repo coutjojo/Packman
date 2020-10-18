@@ -16,6 +16,8 @@ public class Game {
     private boolean running = true;
     private GameState gameState;
     Handler handler;
+
+    public  static int fps = 60;
     //////////////////////////////////////////////////////////////////////
     public Game(){
         window = new Window();
@@ -25,7 +27,6 @@ public class Game {
     }
     public void gameLoop(){
         init();
-        int fps = 60;
         double timePerTick = 1000000000/fps;
         double delta = 0;
         long now;
