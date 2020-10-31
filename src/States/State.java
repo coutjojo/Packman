@@ -6,7 +6,7 @@ import java.awt.*;
 
 public abstract class State {
     private static  State currentState = null;
-    private final Handler handler;
+    protected final Handler handler;
 
     public static void setState (State state){
         currentState = state;
@@ -21,6 +21,7 @@ public abstract class State {
     public State getCurrentState() {
         return currentState;
     }
+
     // CLASS
     public abstract void tick();
 

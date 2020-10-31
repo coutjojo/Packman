@@ -4,6 +4,7 @@ import ImageLoad.Assets;
 import Input.Input;
 import PackmanUi.Window;
 import States.GameState;
+import States.MenuState;
 import States.State;
 
 import java.awt.*;
@@ -14,7 +15,8 @@ public class Game {
     private Graphics g;
     private BufferStrategy bs;
     private boolean running = true;
-    private GameState gameState;
+    public static MenuState menuState;
+    public static GameState gameState;
     Handler handler;
 
     public  static int fps = 60;
@@ -56,7 +58,8 @@ public class Game {
 
     private void init(){
         gameState = new GameState(handler);
-        State.setState(gameState);
+        menuState = new MenuState(handler);
+        State.setState(menuState);
         Assets.init();
         window.addKeyListener(new Input());
 
