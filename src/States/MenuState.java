@@ -1,6 +1,7 @@
 package States;
 
 import ImageLoad.Assets;
+import Input.MListener;
 import Main.Game;
 import Main.Handler;
 import PackmanUi.Window;
@@ -9,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.lang.ref.PhantomReference;
 
 public class MenuState extends State{
@@ -32,11 +35,14 @@ public class MenuState extends State{
     public MenuState(Handler handler) {
         super(handler);
         initButton();
+        handler.getWindow().addMouseListener(new MListener());
     }
 
     @Override
     public void tick() {
-
+        if(MListener.clickOnPos()) {
+            System.out.println("true");
+        }
     }
 
     @Override
@@ -83,4 +89,5 @@ public class MenuState extends State{
 //            }
         }
     }
+
 }
