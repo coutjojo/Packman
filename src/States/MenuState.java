@@ -1,93 +1,107 @@
 package States;
 
+import Componts.Button;
 import ImageLoad.Assets;
-import Input.MListener;
 import Main.Game;
 import Main.Handler;
-import PackmanUi.Window;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.lang.ref.PhantomReference;
 
-public class MenuState extends State{
+public class MenuState extends State implements ActionListener {
 
-    private int ButtonWidth = 50;
-    private int ButtonHeight = 10;
+    private int ButtonWidth = 200;
+    private int ButtonHeight = 50;
     private int ButtonCount = 3;
-    private int ButtonPosY = (int) (Window.height / 0.75);
+    private int ButtonPosX = (handler.getWindow().getCanvas().getSize().width / 2) - (ButtonWidth / 2);
+    private int ButtondifferenceY = ((handler.getWindow().getCanvas().getSize().height / 2) / ButtonCount);
 
+    // Buttons
     private Button play;
     private Button option;
     private Button exit;
 
-    private ActListener actListener = new ActListener();
+    // messages
+    private String titel = "Packmann";
+    private String exitMessage = "Do you want to exit the Game!";
 
-    private int differencX = (Window.width - (ButtonCount * ButtonWidth)) / (ButtonCount - 1);
-
-    private String exitMessage = "Do you want to exit the Game";
-    private String dontExitMessage = "Welcome back!!";
+    private Font menuTitelFont = new Font(Font.MONOSPACED,Font.BOLD,100);
+    private Font menuButtonFont = new Font(Font.MONOSPACED,Font.BOLD,30);
 
     public MenuState(Handler handler) {
         super(handler);
+    }
+
+    @Override
+    public boolean initState() {
         initButton();
-        handler.getWindow().addMouseListener(new MListener());
+        return true;
     }
 
     @Override
     public void tick() {
-        if(MListener.clickOnPos()) {
-            System.out.println("true");
-        }
     }
 
     @Override
     public void render(Graphics g) {
-        g.drawString("Packmann",Window.width / 2,Window.height / 4);
+        //background
+        g.drawImage(Assets.menuBackground,0,0,null);
+
+        //titel
+        g.setColor(Color.BLACK);
+        g.setFont(menuTitelFont);
+        int stringwidth = g.getFontMetrics().stringWidth(titel);
+        g.drawString(titel,handler.getWindow().getCanvas().getSize().width / 2 - stringwidth / 2,handler.getWindow().getCanvas().getSize().height / 4);
+
+        //button
+        play.render(g);
+        option.render(g);
+        exit.render(g);
     }
 
-    private void initButton() {
-        int differencX = (Window.width - (ButtonCount * ButtonWidth)) / (ButtonCount - 1);
-        // Play
-        play = new Button("Play");
-        play.setBounds(differencX,ButtonPosY,ButtonWidth,ButtonHeight);
-        play.addActionListener(actListener);
-        handler.getWindowContent().add(play);
-//        // Option
-//        option = new Button("Option");
-//        option.setBounds(differencX * 2 + ButtonWidth,ButtonPosY,ButtonWidth,ButtonHeight);
-//        option.addActionListener(actListener);
-//        // Exit
-//        exit = new Button("Exit");
-//        exit.setBounds(differencX * 3 + ButtonWidth * 2,ButtonPosY,ButtonWidth,ButtonHeight);
-//        exit.addActionListener(actListener);
-
-        System.out.println("initButton finished");
-    }
-
-    private class ActListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == play) {
-                handler.getWindowContent().remove(play);
-                handler.getWindow().setVisible(true);
-                State.setState(Game.gameState);
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("Action Performed");
+        if(e.getSource() == play) {
+//            System.out.println("[Button] play");
+            State.changeState(Game.gameState);
+        } else if(e.getSource() == option) {
+//            System.out.println("[Button] option");
+        } else if(e.getSource() == exit) {
+//            System.out.println("[Button] exit");
+            int answer = JOptionPane.showOptionDialog(null, exitMessage, "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+            if(answer == JOptionPane.YES_OPTION) {
+                System.exit(1);
             }
-//            } else if(e.getSource() == option) {
-//                System.out.println("In progress");
-//            } else if(e.getSource() == exit) {
-//                int answer = JOptionPane.showConfirmDialog(null,exitMessage);
-//                if(answer == 0) {
-//                    System.exit(1);
-//                } else {
-//                    JOptionPane.showMessageDialog(null,dontExitMessage);
-//                }
-//            }
         }
     }
 
+    // mouse input handeling
+    public void mousePressed(MouseEvent e) {
+        play.mousePressed(e);
+        option.mousePressed(e);
+        exit.mousePressed(e);
+    }
+    public void mouseReleased(MouseEvent e) {
+        play.mouseReleased(e);
+        option.mouseReleased(e);
+        exit.mouseReleased(e);
+    }
+
+    private void initButton() {
+        // Play
+        play = new Button(this,handler,"Play",ButtonPosX,handler.getWindow().getCanvas().getSize().height - ButtondifferenceY * 3,ButtonWidth,ButtonHeight);
+        play.setFont(menuButtonFont);
+        // Option
+        option = new Button(this,handler,"Option",ButtonPosX,handler.getWindow().getCanvas().getSize().height - ButtondifferenceY * 2,ButtonWidth,ButtonHeight);
+        option.setFont(menuButtonFont);
+        // Exit
+        //TODO
+        exit = new Button(this,handler,"Exit",ButtonPosX,handler.getWindow().getCanvas().getSize().height - ButtondifferenceY,ButtonWidth,ButtonHeight);
+        exit.setFont(menuButtonFont);
+//        System.out.println("initButton finished");
+    }
 }

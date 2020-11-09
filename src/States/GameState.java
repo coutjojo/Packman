@@ -15,11 +15,15 @@ public class GameState extends State {
 
     public GameState(Handler handler){
         super(handler);
+    }
+
+    @Override
+    public boolean initState() {
         world = new WorldGenerator("res/worlds/World1.txt",handler);
         player = new Player(handler, world.getSpawnX(),world.getSpawnY(),3.0f);
         ghosts = new Ghost[world.getGhostCount()];
         ghosts[0] = new Ghost(handler, world.getGhostSpawnX(), world.getGhostSpawnY(),3.0f);
-
+        return true;
     }
 
     @Override

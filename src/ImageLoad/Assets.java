@@ -5,12 +5,15 @@ import java.awt.image.BufferedImage;
 public class Assets {
 
     private static final int width = 50, height = 50;
+    //Game
     public static BufferedImage packman_UP, packman_DOWN, packman_LEFT, packman_RIGHT;
     public static BufferedImage ghost1, ghost2;
     public static BufferedImage upperWall, rightWall, leftWall, lowerWall;
     public static BufferedImage upperU, rightU, leftU, lowerU;
     public static BufferedImage rightUpperCorner, rightLowerCorner, leftUpperCorner, leftLowerCorner;
     public static BufferedImage updowntunnel, rightleftTunnel, ground, allWall;
+    //Menu
+    public static BufferedImage menuBackground;
 
     public static void init(){
         //PACKMAN
@@ -42,5 +45,8 @@ public class Assets {
         rightleftTunnel = background.getTile(width,height * 3,width,height);
         ground = background.getTile(width * 2,height * 3,width,height);
         allWall = background.getTile(width * 3,height*3,width,height);
+
+        //MenuBackground
+        menuBackground = ImageLoader.loadImage("/textures/menuBackground.png");
     }
 }
