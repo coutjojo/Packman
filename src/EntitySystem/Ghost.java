@@ -246,9 +246,13 @@ public class Ghost extends Creature {
         }
     }
 
+    /**
+     * set the game to gameOver and call the GameOverWindow
+     */
     public void eatPlayer() {
         //System.exit(999);
         System.out.println("YOU HAVE LOST");
+        handler.getGameState().gameOver();
     }
 
 }

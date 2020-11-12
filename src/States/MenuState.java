@@ -80,11 +80,13 @@ public class MenuState extends State implements ActionListener {
     }
 
     // mouse input handeling
+    @Override
     public void mousePressed(MouseEvent e) {
         play.mousePressed(e);
         option.mousePressed(e);
         exit.mousePressed(e);
     }
+    @Override
     public void mouseReleased(MouseEvent e) {
         play.mouseReleased(e);
         option.mouseReleased(e);

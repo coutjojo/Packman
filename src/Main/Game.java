@@ -95,6 +95,9 @@ public class Game {
     public GameState getGameState() {
         return gameState;
     }
+    public MenuState getMenuState() {
+        return menuState;
+    }
     public MListener getmListener() {
         return mListener;
     }

@@ -12,6 +12,8 @@ public class Assets {
     public static BufferedImage upperU, rightU, leftU, lowerU;
     public static BufferedImage rightUpperCorner, rightLowerCorner, leftUpperCorner, leftLowerCorner;
     public static BufferedImage updowntunnel, rightleftTunnel, ground, allWall;
+    //GameOverWindow in the game
+    public static BufferedImage gameOverWindow;
     //Menu
     public static BufferedImage menuBackground;
 
@@ -45,6 +47,8 @@ public class Assets {
         rightleftTunnel = background.getTile(width,height * 3,width,height);
         ground = background.getTile(width * 2,height * 3,width,height);
         allWall = background.getTile(width * 3,height*3,width,height);
+
+        gameOverWindow = ImageLoader.loadImage("/textures/gameOverWindow.png");
 
         //MenuBackground
         menuBackground = ImageLoader.loadImage("/textures/menuBackground.png");
