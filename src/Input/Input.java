@@ -16,7 +16,6 @@ public class Input implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("help");
         if(e.getKeyCode() == KeyEvent.VK_W) {
             resetUDRL();
             this.UP = true;

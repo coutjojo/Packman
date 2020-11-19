@@ -2,6 +2,7 @@ package EntitySystem;
 
 import ImageLoad.Assets;
 import Main.Handler;
+import States.GameState;
 import Tiles.Tile;
 
 import java.awt.*;
@@ -252,7 +253,7 @@ public class Ghost extends Creature {
     public void eatPlayer() {
         //System.exit(999);
         System.out.println("YOU HAVE LOST");
-        handler.getGameState().gameOver();
+        handler.getGameState().gameOver(GameState.LOST);
     }
 
 }

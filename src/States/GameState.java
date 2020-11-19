@@ -21,17 +21,22 @@ public class GameState extends State implements ActionListener {
     private boolean gameOver;
 
     //GameOverwWindow
-    int windowWidth = 300;
-    int windowHeight = 300;
-    int windowX = handler.getWindow().getCanvas().getWidth() / 2 - windowWidth / 2;
-    int windowY = handler.getWindow().getCanvas().getHeight() / 2 - windowHeight / 2;
-    int buttonCount = 2;
-    int buttonWidth = 100;
-    int buttonHeight = 40;
-    int buttonXInWindow = (windowWidth - buttonWidth) / 2;
-    int buttondifYInWindow = (windowHeight / buttonCount) / 2;
-    Button play;
-    Button exit;
+    private int windowWidth = 300;
+    private int windowHeight = 300;
+    private int windowX = handler.getWindow().getCanvas().getWidth() / 2 - windowWidth / 2;
+    private int windowY = handler.getWindow().getCanvas().getHeight() / 2 - windowHeight / 2;
+    private int buttonWidth = 100;
+    private int buttonHeight = 40;
+    private int buttonXInWindow = (windowWidth / 2) - (buttonWidth / 2);
+    private int buttondifYInWindow = windowHeight / 3; // usedAreas(Title, Button(play), Button(exit))
+    private Button play;
+    private Button exit;
+    public static int WIN = 0;
+    public static int LOST = 1;
+    private int gameOverStatus;
+    private Font gameOverFont = new Font(Font.MONOSPACED,Font.BOLD,50);
+    private String win = "You Win!!";
+    private String lost = "You Lost!";
 
     public GameState(Handler handler){
         super(handler);
@@ -71,6 +76,19 @@ public class GameState extends State implements ActionListener {
             g.drawImage(Assets.gameOverWindow,windowX,windowY,null);
             play.render(g);
             exit.render(g);
+
+            //titel
+            g.setColor(Color.WHITE);
+            g.setFont(gameOverFont);
+            if(gameOverStatus == WIN) {
+                int stringwidth = g.getFontMetrics().stringWidth(win);
+                g.drawString(win,windowX + windowWidth / 2 - stringwidth / 2,windowY + buttondifYInWindow / 2 + buttonHeight);
+            } else if(gameOverStatus == LOST) {
+                int stringwidth = g.getFontMetrics().stringWidth(lost);
+                g.drawString(lost,windowX + windowHeight / 2 -stringwidth / 2,windowY + buttondifYInWindow / 2 + buttonHeight);
+            } else {
+                System.out.println("[ERROR] invalid gameOverStatus");
+            }
         }
     }
 
@@ -103,8 +121,13 @@ public class GameState extends State implements ActionListener {
         windowHeight = 300;
         windowX = handler.getWindow().getCanvas().getWidth() / 2 - windowWidth / 2;
         windowY = handler.getWindow().getCanvas().getHeight() / 2 - windowHeight / 2;
-        play = new Button(this,handler,"play",windowX + buttonXInWindow,windowY + buttondifYInWindow,buttonWidth,buttonHeight);
-        exit = new Button(this,handler,"exit",windowX + buttonXInWindow,windowY + 2 * buttondifYInWindow,buttonWidth,buttonHeight);
+        play = new Button(this,handler,"play",windowX + buttonXInWindow,windowY + buttondifYInWindow + buttondifYInWindow / 2 - buttonHeight / 2,buttonWidth,buttonHeight);
+        exit = new Button(this,handler,"exit",windowX + buttonXInWindow,windowY + 2 * buttondifYInWindow + buttondifYInWindow / 2 - buttonHeight / 2,buttonWidth,buttonHeight);
+    }
+
+    public void gameOver(int gameOverStatus) {
+        this.gameOverStatus = gameOverStatus;
+        gameOver = true;
     }
 
     //GETTER & SETTER
@@ -116,9 +139,5 @@ public class GameState extends State implements ActionListener {
     }
     public WorldGenerator getWorld() {
         return world;
-    }
-
-    public void gameOver() {
-        gameOver = true;
     }
 }

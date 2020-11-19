@@ -13,6 +13,8 @@ public class PowerupManager {
     private WorldGenerator world;
     private ArrayList<String> emptyTiles; //xCordinate + " " + yCordinate
     private Handler handler;
+    private int dotCount = 0;
+    private int powerUpCout = 0;
 
     public PowerupManager(WorldGenerator world, Handler handler) {
         this.world = world;
@@ -20,17 +22,19 @@ public class PowerupManager {
         emptyTiles = new ArrayList<String>();
         items = new ArrayList<Item>();
         emptyPlaces = new ArrayList<Item>();
+
+        findEmptySpaces();
         initDots();
     }
 
     public void initDots(){
-        findEmptySpaces();
         for (String i:emptyTiles){
             String[] Tile = i.split(" ");
             int x,y;
             x= Integer.parseInt(Tile[0]);
             y = Integer.parseInt(Tile[1]);
             items.add(new Dot(handler,x * Tiles.Tile.TILEWIDTH + Tiles.Tile.TILEWIDTH / 2, y * Tiles.Tile.TILEHEIGHT + Tiles.Tile.TILEHEIGHT / 2, 'D'));
+            dotCount++;
         }
     }
 
@@ -51,11 +55,26 @@ public class PowerupManager {
         }
     }
 
+    public void removeItem(Item item) {
+        if(item == null)
+            return;
+        if(item.getClass() == Dot.class) {
+            dotCount--;
+        }
+        items.remove(item);
+        emptyPlaces.add(item);
+    }
+
     public ArrayList<Item> getItems() {
         return items;
     }
-
     public ArrayList<Item> getEmptyPlaces() {
         return emptyPlaces;
+    }
+    public int getDotCount() {
+        return dotCount;
+    }
+    public int getPowerUpCout() {
+        return powerUpCout;
     }
 }
