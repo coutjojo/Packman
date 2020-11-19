@@ -3,6 +3,7 @@ package EntitySystem;
 import ImageLoad.Assets;
 import Input.Input;
 import Main.Handler;
+import States.GameState;
 import Tiles.Tile;
 
 import java.awt.*;
@@ -11,12 +12,10 @@ import java.util.ArrayList;
 public class Player extends Creature {
     //Attributes for the Dots
     private int dotCounter = 0;
-    private ArrayList<Item> removedDots;
 
     public Player(Handler handler,int spawnX, int spwanY, float pSPEED) {
         super(handler, spawnX, spwanY, Tile.TILEWIDTH, Tile.TILEHEIGHT, pSPEED);
         currentLooking = lookingRIGHT; // starting view direction
-        removedDots = new ArrayList<Item>();
     }
 
     @Override
@@ -58,7 +57,9 @@ public class Player extends Creature {
     public void tick() {
         this.getMove();
         this.move();
+        this.win();
         this.eatDot();
+        //TODO player eating ghosts
     }
 
     /**
@@ -68,17 +69,16 @@ public class Player extends Creature {
     public void eatDot() {
         if (super.handler.getWorld().getPowerupManager().getItems() == null)
             return;
+        Dot removedDot = null;
         for (Item d : super.handler.getWorld().getPowerupManager().getItems()) {
-            if (this.collisionBOX.intersects(d.collisionBOX)) {
-                this.dotCounter += 1;
-                removedDots.add(d);
-                super.handler.getWorld().getPowerupManager().getEmptyPlaces().add(d);
+            if(d.getClass() == Dot.class) {
+                if (this.collisionBOX.intersects(d.collisionBOX)) {
+                    this.dotCounter += 1;
+                    removedDot = (Dot) d;
+                }
             }
         }
-        for (Item d : removedDots) {
-            super.handler.getWorld().getPowerupManager().getItems().remove(d);
-        }
-        removedDots.clear();
+        handler.getWorld().getPowerupManager().removeItem(removedDot);
     }
 
     /**
@@ -131,6 +131,14 @@ public class Player extends Creature {
         if (Input.LEFT) {
             super.xMove = -super.SPEED;
             super.yMove = 0;
+        }
+    }
+
+    public void win() {
+        System.out.println(handler.getWorld().getPowerupManager().getDotCount());
+        if(handler.getWorld().getPowerupManager().getDotCount() == 0) {
+            System.out.println("help");
+            handler.getGameState().gameOver(GameState.WIN);
         }
     }
 }

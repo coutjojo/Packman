@@ -24,12 +24,18 @@ public abstract class Creature extends Entity{
     public static int DownCollision = 2;
     public static int LeftCollision = 3;
     public static int RightCollision = 4;
+    // extras
+    protected boolean alive;
+    protected boolean killedCreature;
+
 
     public Creature(Handler handler, float posX, float posY, int CBwidth, int CBheight, float speed){
         super(handler,posX,posY,(int) (CBwidth - SPEED),(int) (CBheight - SPEED));
         this.SPEED = speed;
         this.width = (int) (Tile.TILEWIDTH - SPEED);
         this.height = (int) (Tile.TILEHEIGHT - SPEED);
+        this.alive = true;
+        this.killedCreature = false;
     }
 
     /**
@@ -90,5 +96,13 @@ public abstract class Creature extends Entity{
             currentLooking = lookingLEFT;
             currentLookingBack = lookingRIGHT;
         }
+    }
+
+    /**
+     * is called when the creature is died
+     */
+    protected void die(Creature killer) {
+        this.alive = false;
+        this.killedCreature = true;
     }
 }

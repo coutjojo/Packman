@@ -2,8 +2,10 @@ package Main;
 
 import ImageLoad.Assets;
 import Input.Input;
+import Input.MListener;
 import PackmanUi.Window;
 import States.GameState;
+import States.MenuState;
 import States.State;
 
 import java.awt.*;
@@ -14,16 +16,18 @@ public class Game {
     private Graphics g;
     private BufferStrategy bs;
     private boolean running = true;
-    private GameState gameState;
+    public static MenuState menuState;
+    public static GameState gameState;
     Handler handler;
+    private MListener mListener;
 
     public  static int fps = 60;
     //////////////////////////////////////////////////////////////////////
     public Game(){
         window = new Window();
         handler = new Handler(this);
+        mListener = new MListener(handler);
         gameLoop();
-
     }
     public void gameLoop(){
         init();
@@ -56,10 +60,11 @@ public class Game {
 
     private void init(){
         gameState = new GameState(handler);
-        State.setState(gameState);
+        menuState = new MenuState(handler);
+        State.changeState(menuState);
         Assets.init();
-        window.addKeyListener(new Input());
-
+        window.getCanvas().addKeyListener(new Input());
+        window.getCanvas().addMouseListener(mListener);
     }
     public void render() {
         bs = window.getCanvas().getBufferStrategy();
@@ -70,7 +75,7 @@ public class Game {
 
         g = bs.getDrawGraphics();
         g.clearRect(0,0, window.getWidth(), window.getHeight());
-        if(State.getState()!= null){
+        if(State.getState()!= null && State.getState().isDoneLoading()){
             State.getState().render(g);
         }
         bs.show();
@@ -78,10 +83,9 @@ public class Game {
     }
 
     public void tick() {
-        if(State.getState()!= null){
+        if(State.getState()!= null && State.getState().isDoneLoading()){
             State.getState().tick();
         }
-
     }
 
     //GETTER & SETTER
@@ -90,5 +94,11 @@ public class Game {
     }
     public GameState getGameState() {
         return gameState;
+    }
+    public MenuState getMenuState() {
+        return menuState;
+    }
+    public MListener getmListener() {
+        return mListener;
     }
 }
